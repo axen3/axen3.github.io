@@ -4,9 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>GamesLand</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Roboto', sans-serif;
       margin: 0;
       background: #121212;
       color: #eee;
@@ -18,9 +19,14 @@
       color: #000;
     }
 
-    .container {
+    /* NEW: wraps entire site */
+    .site-wrapper {
       max-width: 800px;
-      margin: auto;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .container {
       padding: 20px;
     }
 
@@ -34,32 +40,53 @@
       background-color: #333;
       color: white;
       padding: 10px 20px;
-      display: flex;
-      align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
     }
-
+header{position: relative;}
     .logo-section {
       display: flex;
       align-items: center;
       gap: 10px;
+    
     }
-
+    .logo-section h2{
+      font-family: 'Orbitron', Sans-Serif;
+      margin: 0;
+    }
     .toggle-section {
       font-size: 18px;
       cursor: pointer;
+      position: absolute;
+  top: 50%;
+  right: 20px;           /* tweak as needed */
+  transform: translateY(-50%);
+ 
     }
 
     header img {
       height: 50px;
       border-radius: 4px;
     }
+.loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #007bff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 50px auto;
+}
 
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
     .controls {
       display: flex;
       justify-content: center;
-      margin-bottom: 20px;
+      margin: 20px 0;
+      position: relative;
     }
 
     .controls input {
@@ -72,10 +99,23 @@
       transition: box-shadow 0.3s ease;
       width: 100%;
       max-width: 400px;
-      background: white url('https://www.svgrepo.com/show/80156/search.svg') no-repeat 10px center;
-      background-size: 20px 20px;
+      background: white;
+      color: black;
     }
-
+    .controls svg {
+      position: absolute;
+      left: calc(50% - 230px + 15px);
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      fill: #555;
+    }
+@media (max-width: 768px) {
+  .controls svg {
+    left: calc(50% - 200px + 15px);
+  }
+}
     .controls input:focus {
       box-shadow: 0 0 0 3px #007bff88;
     }
@@ -109,13 +149,14 @@
     }
 
     .game-info h3 {
+      font-family: 'Orbitron', Sans-Serif;
       margin: 0 0 5px;
     }
 
     .pagination {
       display: flex;
       justify-content: center;
-      margin-top: 20px;
+      margin: 40px 0 20px;
     }
 
     .pagination button {
@@ -135,34 +176,88 @@
     }
 
     footer {
-      text-align: center;
+  text-align: center;
+  margin-top: 40px;
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
     }
+    /* Modal overlay styles */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.9);
+  color: #fff;
+  display: none;            /* hidden by default */
+  flex-direction: column;
+}
+
+.modal-header {
+  padding: 20px;
+  width:100%;
+  max-width: 800px;
+}
+
+.back-arrow {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.modal-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 32px;
+
+  /* allow scrolling if it overflows */
+  overflow: auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo-section">
-      <img src="https://picsum.photos/100/50" alt="Logo" />
-      <h2>GameLand</h2>
-    </div>
-    <div class="toggle-section" onclick="toggleDarkMode()" id="themeToggle">
-      &#9790; <!-- Moon by default -->
-    </div>
-  </header>
+  <div class="site-wrapper">
+    <header>
+      <div class="container">
+        <div class="logo-section">
+          <img src="https://i.ibb.co/LXM3vPWc/Picsart-25-05-14-15-02-30-628.png" alt="Logo" />
+        </div>
+        <div class="toggle-section" onclick="toggleDarkMode()" id="themeToggle">
+  <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+    <!-- Moon icon for dark mode -->
+    <path d="M21.64 13.3A9 9 0 1110.7 2.36 7 7 0 0021.64 13.3z"/>
+  </svg>
+</div>
+      </div>
+    </header>
 
-  <div class="container" id="mainContainer">
-    <div class="controls">
-      <input type="text" id="searchBox" placeholder="Search game titles..." />
+    <div class="container" id="mainContainer">
+      <div class="controls">
+        <svg viewBox="0 0 24 24">
+          <path d="M21.71 20.29l-3.388-3.387A8.933 8.933 0 0019 11a9 9 0 10-9 9 8.933 8.933 0 005.902-1.678l3.387 3.388a1 1 0 001.414-1.414zM11 18a7 7 0 117-7 7.008 7.008 0 01-7 7z"/>
+        </svg>
+        <input type="text" id="searchBox" placeholder="Search for a game..." />
+      </div>
+
+      <div id="gamesContainer">
+  <div class="loader"></div>
+</div>
+      <div class="pagination" id="pagination"></div>
     </div>
 
-    <div id="gamesContainer">Loading...</div>
-    <div class="pagination" id="pagination"></div>
+    <footer><span>&copy; 2025 GamesLand. All rights reserved.</span></footer>
+    <!-- Modal overlay -->
+<div id="cardModal" class="modal">
+  <div class="modal-header">
+    <span id="modalBack" class="back-arrow" onclick="closeModal()">←</span>
   </div>
-
-  <footer>
-    &copy; 2025 GamesLand. All rights reserved.
-  </footer>
-
+  <div class="modal-content" id="modalContent"></div>
+</div>
+</div>
   <script>
     const PAGE_SIZE = 10;
     let currentPage = 1;
@@ -173,22 +268,31 @@
     const themeToggle = document.getElementById("themeToggle");
 
     function setTheme(mode) {
-      if (mode === "light") {
-        body.classList.add("light-mode");
-        themeToggle.innerHTML = "&#9728;"; // Sun
-      } else {
-        body.classList.remove("light-mode");
-        themeToggle.innerHTML = "&#9790;"; // Moon
-      }
-      localStorage.setItem("theme", mode);
-    }
+  const themeIcon = document.getElementById("themeIcon");
+
+  if (mode === "light") {
+    body.classList.add("light-mode");
+    themeIcon.innerHTML = `
+      <!-- Moon Icon (for switching to dark mode) -->
+      <path d="M21.64 13.3A9 9 0 1110.7 2.36 7 7 0 0021.64 13.3z" fill="currentColor"/>
+    `;
+  } else {
+    body.classList.remove("light-mode");
+    themeIcon.innerHTML = `
+      <!-- Sun Icon (for switching to light mode) -->
+      <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" fill="none"/>
+      <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+    `;
+  }
+
+  localStorage.setItem("theme", mode);
+}
 
     function toggleDarkMode() {
       const isLight = body.classList.contains("light-mode");
       setTheme(isLight ? "dark" : "light");
     }
 
-    // Load saved theme or default to dark
     const savedTheme = localStorage.getItem("theme") || "dark";
     setTheme(savedTheme);
 
@@ -223,13 +327,40 @@
         card.innerHTML = `
           <img src="${game.logoUrl}" alt="${game.name} logo">
           <div class="game-info">
-            <h3>${game.name} (v${game.version})</h3>
-            <p>${game.description}</p>
-            <p><strong>Downloads:</strong> ${game.downloads} | <strong>Rating:</strong> ${game.rate}</p>
-            <p><strong>Size:</strong> ${game.size} | <strong>Updated:</strong> ${game.updateDate}</p>
-            <p><strong>Features:</strong> ${game.modFeatures}</p>
+            <h3>${game.name}</h3>
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="black">
+  <path d="M7 3h10v2H7zM7 19h10v2H7zM4 8h16v8H4zM12 10h2v4h-2zM12 14h2v2h-2z"/>
+</svg> v.${game.version}</p>
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="black">
+  <path d="M5 20h14v-2H5v2zm7-18v12l5-5h-3V4h-4v5H7l5 5z"/>
+</svg> ${game.downloads} | <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="black">
+  <path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8-6.2-3.3-6.2 3.3 1.2-6.8-5-4.9 6.9-1z"/>
+</svg> ${game.rate}</p>
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="black">
+  <path d="M12 2c5.5 0 10 4.5 10 10S17.5 22 12 22 2 17.5 2 12 6.5 2 12 2zm0 18c4.4 0 8-3.6 8-8S16.4 4 12 4 4 7.6 4 12s3.6 8 8 8zm-1-13h2v6l4 2-1 2-5-2V7z"/>
+</svg> ${game.updateDate}</p>
           </div>
         `;
+        // wire up the real JSON id
+    card.onclick = () => {
+    // find the full game object
+    const selected = allGames.find(g => g.id === game.id);
+    // build modal inner HTML
+    document.getElementById('modalContent').innerHTML = `
+      <div style="text-align:center; max-width:400px; margin:0 auto;">
+        <img src="${selected.logoUrl}"
+             alt="${selected.name} logo"
+             style="width:100%; height:auto; border-radius:8px;"/>
+        <h2 style="margin:10px 0; font-family: 'Orbitron', sans-serif;">${selected.name}</h2>
+        <p><strong>Version:</strong> ${selected.version}</p>
+        <p><strong>Size:</strong> ${selected.size || 'N/A'}</p>
+        <p><strong>Last Updated:</strong> ${selected.updateDate}</p>
+      </div>
+    `;
+    // show modal
+    document.getElementById('cardModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  };
         container.appendChild(card);
       });
 
@@ -240,36 +371,40 @@
       const container = document.getElementById("mainContainer");
       container.scrollIntoView({ behavior: 'smooth' });
     }
-
+function closeModal() {
+  document.getElementById('cardModal').style.display = 'none';
+  document.body.style.overflow = 'auto';
+}
     function renderPagination() {
-      const pagination = document.getElementById("pagination");
-      pagination.innerHTML = "";
+  const pagination = document.getElementById("pagination");
+  pagination.innerHTML = "";
 
-      const totalPages = Math.ceil(filteredGames.length / PAGE_SIZE);
+  const totalPages = Math.ceil(filteredGames.length / PAGE_SIZE);
 
-      const prevBtn = document.createElement("button");
-      prevBtn.textContent = "Previous";
-      prevBtn.disabled = currentPage === 1;
-      prevBtn.onclick = () => {
-        currentPage--;
-        renderGamesPage();
-        scrollToTop();
-      };
+  const prevBtn = document.createElement("button");
+  prevBtn.textContent = "Previous";
+  // hide on first page
+  prevBtn.style.display = currentPage === 1 ? "none" : "inline-block";
+  prevBtn.onclick = () => {
+    currentPage--;
+    renderGamesPage();
+    scrollToTop();
+  };
 
-      const nextBtn = document.createElement("button");
-      nextBtn.textContent = "Next";
-      nextBtn.disabled = currentPage === totalPages;
-      nextBtn.onclick = () => {
-        currentPage++;
-        renderGamesPage();
-        scrollToTop();
-      };
+  const nextBtn = document.createElement("button");
+  nextBtn.textContent = "Next";
+  // hide on last page
+  nextBtn.style.display = currentPage === totalPages ? "none" : "inline-block";
+  nextBtn.onclick = () => {
+    currentPage++;
+    renderGamesPage();
+    scrollToTop();
+  };
 
-      pagination.appendChild(prevBtn);
-      pagination.appendChild(document.createTextNode(` Page ${currentPage} of ${totalPages} `));
-      pagination.appendChild(nextBtn);
-    }
-
+  pagination.appendChild(prevBtn);
+  pagination.appendChild(document.createTextNode(` Page ${currentPage} of ${totalPages} `));
+  pagination.appendChild(nextBtn);
+}
     fetch("https://api.jsonbin.io/v3/b/68234c858561e97a50131282", {
       headers: {
         "X-Access-Key": "$2a$10$gSgfYlP3hTZUvhD66Vr0ReHzaQdcR/c0oi9rzQeM7/xDQb0pYfen2"
@@ -288,3 +423,4 @@
   </script>
 </body>
 </html>
+
