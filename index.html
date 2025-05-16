@@ -129,7 +129,7 @@ header{position: relative;}
 .scroll-link {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     width: 100%;
     max-width: 115px;
     background-color: #bfff00;
@@ -149,7 +149,7 @@ header{position: relative;}
     background-color: #7fff00;
     color: #1e1e1e;
   }
-  .scroll-link .linksvg{height: 20px;width:20px}
+  .scroll-link .linksvg{height: 25px;width:25px}
     .game-card {
       background: #1e1e1e;
       border-radius: 8px;
@@ -205,19 +205,23 @@ header{position: relative;}
       width: var(--rating-width);
     }
     .pagination {
-      display: flex;
+     display: flex;
+      align-items: center;
       justify-content: center;
       margin: 40px 0 20px;
     }
 
     .pagination button {
-      margin: 0 5px;
-      padding: 5px 10px;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 0 15px;
+      padding: 10px 15px;
       font-size: 14px;
       cursor: pointer;
-      border: none;
-      background-color: #007bff;
-      color: white;
+      border: 1px solid #ccc;
+      background-color: #bfff00;
+      color: #e1e1e;
       border-radius: 4px;
     }
 
@@ -413,14 +417,8 @@ header{position: relative;}
 </svg>
         <input type="text" id="searchBox" placeholder="Search for a game..." />
       </div>
-<a class="scroll-link" href="#how-it-works"><svg class="linksvg" xmlns="http://www.w3.org/2000/svg" height="20" width="20" fill="currentColor" viewBox="0 0 24 24">
-  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10
-           10-4.48 10-10S17.52 2 12 2zm0 17c-.55 0-1-.45-1-1
-           s.45-1 1-1 1 .45 1 1-.45 1-1 1zm1.07-7.75l-.9.92c-.25.26-.37.61-.37.98v.35
-           c0 .55-.45 1-1 1s-1-.45-1-1v-.5c0-.66.26-1.3.73-1.77l1.2-1.2
-           c.37-.36.57-.86.57-1.38 0-1.1-.9-2-2-2s-2 .9-2 2
-           c0 .55-.45 1-1 1s-1-.45-1-1c0-2.21 1.79-4 4-4s4 1.79 4 4
-           c0 .88-.36 1.68-.93 2.25z"/>
+<a class="scroll-link" href="#how-it-works"><svg class="linksvg" version="1.1" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path transform="scale(.83333)" d="m12 17.002v-0.009375m0-2.1328c0-3.2156 3-2.5031 3-5.0016 0-1.5797-1.3453-2.8594-3-2.8594-1.3453 0-2.4797 0.84375-2.8641 2.0016m11.864 3c0 4.9688-4.0312 9-9 9s-9-4.0312-9-9 4.0312-9 9-9 9 4.0312 9 9zm0 0" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
 </svg>How It Works</a>
       <div id="gamesContainer">
   <div class="loader"></div>
@@ -599,7 +597,7 @@ function getStarRatingHTML(rating) {
         <p><strong style="color:#bfff00">Version:</strong> ${selected.version}</p>
         <p><strong style="color:#bfff00">Size:</strong> ${selected.size || 'N/A'}</p>
         <p><strong style="color:#bfff00">Last Update:</strong> ${selected.updateDate}</p>
-        <br/><h4 style="color:#bfff00">About Game:</h4><p>${selected.description}</p><h4 style="color:#bfff00">Mod Features:</h4><p>${selected.modFeatures}</p><br/><button class="dw-button" onclick="window.open('${selected.lockerLink}')">Download (${selected.size}) <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
+        <br/><h4 style="color:#bfff00">About Game:</h4><p style="text-align:left;font-size:1rem;line-height:1.8">${selected.description}</p><h4 style="color:#bfff00">Mod Features:</h4><p style="text-align:left;">${selected.modFeatures}</p><br/><button class="dw-button" onclick="window.open('${selected.lockerLink}')">Download (${selected.size}) <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
     stroke-linecap="round" stroke-linejoin="round" class="feather feather-download">
   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
   <polyline points="7 10 12 15 17 10" />
@@ -679,9 +677,11 @@ window.addEventListener("popstate", () => {
   const totalPages = Math.ceil(filteredGames.length / PAGE_SIZE);
 
   const prevBtn = document.createElement("button");
-  prevBtn.textContent = "Previous";
+  prevBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+  <path d="M15 6l-6 6 6 6"/>
+</svg><span>Previous</span>`;
   // hide on first page
-  prevBtn.style.display = currentPage === 1 ? "none" : "inline-block";
+  prevBtn.style.display = currentPage === 1 ? "none" : "flex";
   prevBtn.onclick = () => {
     currentPage--;
     renderGamesPage();
@@ -689,9 +689,14 @@ window.addEventListener("popstate", () => {
   };
 
   const nextBtn = document.createElement("button");
-  nextBtn.textContent = "Next";
+nextBtn.innerHTML = `<span>Next</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+     viewBox="0 0 24 24">
+  <path d="M9 6l6 6-6 6"/>
+</svg>`;
   // hide on last page
-  nextBtn.style.display = currentPage === totalPages ? "none" : "inline-block";
+  nextBtn.style.display = currentPage === totalPages ? "none" : "flex";
   nextBtn.onclick = () => {
     currentPage++;
     renderGamesPage();
