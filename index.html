@@ -120,17 +120,20 @@ header{position: relative;}
       transform: translateY(-50%);
       width: 20px;
       height: 20px;
-      fill: #555;
+      color: #555;
     }
     .controls input:focus {
       box-shadow: 0 0 0 3px #007bff88;
     }
 .scroll-link {
-    display: block;
-    width: 120px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 115px;
     background-color: #bfff00;
     color: #111;
-    padding: 12px 20px;
+    padding: 10px;
     margin: 0 auto;
     text-align: center;
     border-radius: 8px;
@@ -145,6 +148,7 @@ header{position: relative;}
     background-color: #7fff00;
     color: #1e1e1e;
   }
+  .scroll-link .linksvg{height: 20px;width:20px}
     .game-card {
       background: #1e1e1e;
       border-radius: 8px;
@@ -250,9 +254,13 @@ header{position: relative;}
     .step-icon {
       font-size: 2em;
       margin-bottom: 10px;
-      color: #00e5ff;
+      color: #bfff00;
     }
-
+    .light-mode .step-icon{color:#7fff00;}
+.steps-icons {
+  width: 35px;
+  height: 35px;
+}
     .step h4 {
       font-size: 1.2em;
       margin-bottom: 10px;
@@ -308,13 +316,17 @@ header{position: relative;}
 .dw-button{
   background: linear-gradient(135deg, #d4fc79, #96e6a1); /* yellow-green gradient */
   color: #000;
-  width: 200px;
-  padding: 15px 24px;
+  padding: 15px 25px;
+  margin: 0 auto;
   border: none;
   border-radius: 25px;
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
+  display: flex;
+  gap: 10px;
+  vertical-align: center;
+  align-items: center;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
@@ -323,6 +335,54 @@ header{position: relative;}
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 
 }
+/* ###### iinstallation guide ######*/
+    .insta-button {
+      background-color: #7bbb1;
+      color: #000;
+      padding: 10px 20px;
+      border: none;
+      margin: 5px auto;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .insta-button svg {
+      width: 20px;
+      height: 20px;
+      fill: #000;
+    }
+    .tab-buttons, .tab-content {
+      margin-top: 15px;
+    }
+    .tab-button {
+      background-color: #000;
+      color: #fff;
+      border: 1px solid #444;
+      padding: 10px;
+      cursor: pointer;
+      margin-right: 5px;
+      border-radius: 6px;
+    }
+    .tab-button.active {
+      background-color: #bfff00;
+      color: #000;
+    }
+    .tab-content {
+      display: none;
+      margin-top: 10px;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    ol {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
@@ -342,13 +402,23 @@ header{position: relative;}
     </header>
 
     <div class="container" id="mainContainer">
-      <div class="controls">
-        <svg viewBox="0 0 24 24">
-          <path d="M21.71 20.29l-3.388-3.387A8.933 8.933 0 0019 11a9 9 0 10-9 9 8.933 8.933 0 005.902-1.678l3.387 3.388a1 1 0 001.414-1.414zM11 18a7 7 0 117-7 7.008 7.008 0 01-7 7z"/>
-        </svg>
+      <div class="controls"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+     viewBox="0 0 24 24">
+  <circle cx="11" cy="11" r="8" />
+  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+</svg>
         <input type="text" id="searchBox" placeholder="Search for a game..." />
       </div>
-<a class="scroll-link" href="#how-it-works">How It Works</a>
+<a class="scroll-link" href="#how-it-works"><svg class="linksvg" xmlns="http://www.w3.org/2000/svg" height="20" width="20" fill="currentColor" viewBox="0 0 24 24">
+  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10
+           10-4.48 10-10S17.52 2 12 2zm0 17c-.55 0-1-.45-1-1
+           s.45-1 1-1 1 .45 1 1-.45 1-1 1zm1.07-7.75l-.9.92c-.25.26-.37.61-.37.98v.35
+           c0 .55-.45 1-1 1s-1-.45-1-1v-.5c0-.66.26-1.3.73-1.77l1.2-1.2
+           c.37-.36.57-.86.57-1.38 0-1.1-.9-2-2-2s-2 .9-2 2
+           c0 .55-.45 1-1 1s-1-.45-1-1c0-2.21 1.79-4 4-4s4 1.79 4 4
+           c0 .88-.36 1.68-.93 2.25z"/>
+</svg>How It Works</a>
       <div id="gamesContainer">
   <div class="loader"></div>
 </div>
@@ -358,28 +428,50 @@ header{position: relative;}
     <h3>How It Works</h3>
     <div class="steps">
       <div class="step">
-        <div class="step-icon">🔍</div>
+        <div class="step-icon"><svg class="steps-icons" xmlns="http://www.w3.org/2000/svg" fill="none"
+     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+     viewBox="0 0 24 24">
+  <circle cx="11" cy="11" r="8" />
+  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+</svg></div>
         <h4>Find Your Game</h4>
         <p>Browse our collection of modded games or search for what you want.</p>
       </div>
       <div class="step">
-        <div class="step-icon">⬇️</div>
+        <div class="step-icon"><svg class="steps-icons" xmlns="http://www.w3.org/2000/svg" fill="none"
+     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+     viewBox="0 0 24 24">
+  <path d="M9 12l2 2l4 -4" />
+  <circle cx="12" cy="12" r="10" />
+</svg></div>
         <h4>Complete Offer</h4>
         <p>Complete a quick offer (less than 1 minute) to unlock the download.</p>
       </div>
       <div class="step">
-        <div class="step-icon">📱</div>
+        <div class="step-icon"><svg class="steps-icons" xmlns="http://www.w3.org/2000/svg" fill="none"
+     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+     viewBox="0 0 24 24">
+  <circle cx="12" cy="12" r="10" />
+  <polyline points="8 12 12 16 16 12" />
+  <line x1="12" y1="8" x2="12" y2="16" />
+</svg></div>
         <h4>Download & Install</h4>
         <p>Get your download link and install the game with our instructions.</p>
       </div>
       <div class="step">
-        <div class="step-icon">🎮</div>
+        <div class="step-icon"><svg class="steps-icons" xmlns="http://www.w3.org/2000/svg" fill="none"
+     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+     viewBox="0 0 24 24">
+  <rect x="2" y="6" width="20" height="12" rx="2" ry="2" />
+  <circle cx="8" cy="12" r="1.5" />
+  <path d="M16 10h.01M18 12h.01M16 14h.01" />
+</svg></div>
         <h4>Enjoy Premium</h4>
         <p>Play with all premium features unlocked - unlimited money, no ads!</p>
       </div>
     </div>
   </div>
-    <footer><span>&copy; 2025 <span style="color:#bfff00">GamesLand</span> - v1.0</span></footer>
+    <footer><span>&copy; 2025 <span style="color:#bfff00">GamesLand</span> - v1.0.1</span></footer>
     <!-- Modal overlay -->
 <div id="cardModal" class="modal">
   <div class="modal-header">
@@ -467,7 +559,7 @@ function getStarRatingHTML(rating) {
         card.innerHTML = `
           <img src="${game.logoUrl}" alt="${game.name} logo">
           <div class="game-info">
-            <h3>${game.name}</h3><span class="rating">${getStarRatingHTML(game.rate)}</span> <span>${game.rate}</span>
+            <h3>${game.name}</h3><span class="rating">${getStarRatingHTML(game.rate)}</span> <strong>${game.rate}</strong>
             <p><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
   <path d="M7 3h10v2H7zM7 19h10v2H7zM4 8h16v8H4zM12 10h2v4h-2zM12 14h2v2h-2z"/>
 </svg><strong> ${game.version}</strong> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
@@ -492,7 +584,50 @@ function getStarRatingHTML(rating) {
         <p><strong style="color:#bfff00">Version:</strong> ${selected.version}</p>
         <p><strong style="color:#bfff00">Size:</strong> ${selected.size || 'N/A'}</p>
         <p><strong style="color:#bfff00">Last Update:</strong> ${selected.updateDate}</p>
-        <br/><h4 style="color:#bfff00">About Game:</h4><p>${selected.description}</p><h4 style="color:#bfff00">Mod Features:</h4><p>${selected.modFeatures}</p><br/><button class="dw-button" onclick="window.open('${selected.lockerLink}')">Download</button><br/><br/>
+        <br/><h4 style="color:#bfff00">About Game:</h4><p>${selected.description}</p><h4 style="color:#bfff00">Mod Features:</h4><p>${selected.modFeatures}</p><br/><button class="dw-button" onclick="window.open('${selected.lockerLink}')">Download (${selected.size}) <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round" class="feather feather-download">
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+  <polyline points="7 10 12 15 17 10" />
+  <line x1="12" y1="15" x2="12" y2="3" />
+</svg></button><br/><br/>  <button class="insta-button" onclick="toggleGuide()">
+    <!-- SVG Icon -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M12 16l4-5h-3V4h-2v7H8l4 5zM4 18h16v2H4z"/>
+    </svg>
+    Installation Guide
+  </button>
+
+  <div id="platformTabs" style="display: none;">
+    <div class="tab-buttons">
+      <div class="tab-button active" onclick="showTab('android')">Android</div>
+      <div class="tab-button" onclick="showTab('ios')">iOS</div>
+    </div>
+
+    <div id="android" class="tab-content active">
+      <ol>
+        <li>Download the APK file using the Android download button above</li>
+        <li>Go to Settings > Security > Enable "Unknown Sources"</li>
+        <li>Locate the downloaded APK file in your file manager</li>
+        <li>Tap to install and follow on-screen instructions</li>
+        <li>After installation, download the additional game cache files</li>
+        <li>Place cache files in Android/obb/ folder</li>
+        <li>Launch the game and enjoy!</li>
+      </ol>
+    </div>
+
+    <div id="ios" class="tab-content">
+      <ol>
+        <li>Download the IPA file using the iOS download button</li>
+        <li>Install AltStore on your computer (Windows/Mac required)</li>
+        <li>Connect your iOS device and open AltStore</li>
+        <li>Select "Install .ipa" and choose the downloaded file</li>
+        <li>Enter your Apple ID when prompted</li>
+        <li>Trust the developer in Settings > General > Device Management</li>
+        <li>Launch the game and download additional resources</li>
+      </ol>
+    </div>
+  </div>
+
       </div>
     `;
     // show modal
@@ -567,6 +702,19 @@ window.addEventListener("popstate", () => {
       console.error("Error loading data:", error);
       document.getElementById("gamesContainer").innerText = "Failed to load data.";
     });
+    // guide Installation
+      function toggleGuide() {
+      const tabs = document.getElementById("platformTabs");
+      tabs.style.display = tabs.style.display === "none" ? "block" : "none";
+    }
+
+    function showTab(tabId) {
+      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+
+      document.querySelector(`[onclick="showTab('${tabId}')"]`).classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    }
   </script>
 </body>
 </html>
