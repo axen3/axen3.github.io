@@ -304,6 +304,7 @@ header{position: relative;}
   box-sizing: border-box;
 }
 .modal-content h3{font-family: 'Orbitron',Sans-Serif}
+.modal-content .rating{font-size:1.5rem}
 .dw-button{
   background: linear-gradient(135deg, #d4fc79, #96e6a1); /* yellow-green gradient */
   color: #000;
@@ -466,18 +467,15 @@ function getStarRatingHTML(rating) {
         card.innerHTML = `
           <img src="${game.logoUrl}" alt="${game.name} logo">
           <div class="game-info">
-            <h3>${game.name}</h3>
+            <h3>${game.name}</h3><span class="rating">${getStarRatingHTML(game.rate)}</span> <span>${game.rate}</span>
             <p><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
   <path d="M7 3h10v2H7zM7 19h10v2H7zM4 8h16v8H4zM12 10h2v4h-2zM12 14h2v2h-2z"/>
-</svg> ${game.version}</p>
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+</svg><strong> ${game.version}</strong> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
   <path d="M5 20h14v-2H5v2zm7-18v12l5-5h-3V4h-4v5H7l5 5z"/>
-</svg> ${game.downloads} <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-  <path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8-6.2-3.3-6.2 3.3 1.2-6.8-5-4.9 6.9-1z"/>
-</svg> ${game.rate}</p>
+</svg><strong> ${game.downloads} </strong></p>
             <p><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
   <path d="M12 2c5.5 0 10 4.5 10 10S17.5 22 12 22 2 17.5 2 12 6.5 2 12 2zm0 18c4.4 0 8-3.6 8-8S16.4 4 12 4 4 7.6 4 12s3.6 8 8 8zm-1-13h2v6l4 2-1 2-5-2V7z"/>
-</svg> ${game.updateDate}</p><span class="rating">${getStarRatingHTML(game.rate)}</span> <span>${game.rate}</span>
+</svg><strong>${game.updateDate}</strong></p>
           </div>
         `;
         // wire up the real JSON id
