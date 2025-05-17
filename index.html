@@ -472,7 +472,7 @@ header{position: relative;}
       </div>
     </div>
   </div>
-    <footer><span>&copy; 2025 <span style="color:#bfff00">GamesLand</span> - v1.0.1</span></footer>
+    <footer><span>&copy; 2025 <span style="color:#bfff00">GamesLand</span> - v1.0.2</span></footer>
     <!-- Modal overlay -->
 <div id="cardModal" class="modal">
   <div class="modal-header">
@@ -648,6 +648,7 @@ function getStarRatingHTML(rating) {
     document.getElementById('cardModal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
     history.pushState({ modalOpen: true }, "", "#overview");
+    document.getElementById('modalContent').scrollTop = 0;
   };
         container.appendChild(card);
       });
