@@ -74,10 +74,147 @@
       cursor: pointer;
       transition: background-color 0.3s;
     }
-
     button:hover {
       background-color: #0056b3;
     }
+    .button-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+#addGameBtn {
+  background-color: #6610f2;
+  color: white;
+  font-weight: bold;
+  border: none;
+  flex: 1;
+}
+
+#addGameBtn:hover {
+  background-color: #520dc2;
+}
+
+#clearBtn {
+  background-color: #6c757d;
+  color: white;
+  font-weight: bold;
+  border: none;
+  flex: 1;
+}
+
+#clearBtn:hover {
+  background-color: #5a6268;
+}
+#downloadBtn {
+  background-color: #20c997;
+  color: white;
+  font-weight: bold;
+  border: none;
+  margin-top: 10px;
+}
+
+#downloadBtn:hover {
+  background-color: #198754;
+}
+.file-upload {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 10px 0;
+  border: 1.8px solid #17aaff;
+  border-radius: 8px;
+}
+
+.file-upload input[type="file"] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.file-upload label {
+  background-color: #17a2ff;
+  color: white;
+  height: 100%;
+  padding: 12px 20px;
+  margin: 0;
+  border-radius: 8px 0px 0px 8px #17a2ff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.file-upload label:hover {
+  background-color: #138496;
+}
+
+.file-upload span {
+  font-size: 14px;
+  color: #555;
+}
+   #copyBtn {
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  font-weight: bold;
+}
+
+#copyBtn:hover {
+  background-color: #138496;
+}
+#gameCount {
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+  background-color: #e7f3ff;
+  border-left: 6px solid #007bff;
+  padding: 10px 16px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2);
+  max-width: 800px;
+  width: 100℅;
+  margin: 0 auto 16px auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  user-select: none;
+  text-align: center;
+}
+    .game-card button:nth-of-type(1) { /* Edit Button */
+  background-color: #f0ad4e;
+  color: white;
+  border: none;
+}
+
+.game-card button:nth-of-type(2) { /* Remove/Delete Button */
+  background-color: #d9534f;
+  color: white;
+  border: none;
+}
+
+.game-card button:nth-of-type(3),
+.game-card button:nth-of-type(4) { /* Move Up and Down Buttons */
+  background-color: #5cb85c;
+  color: white;
+  border: none;
+}
+.game-card button:nth-of-type(1):hover {
+  background-color: #ec971f;
+}
+
+.game-card button:nth-of-type(2):hover {
+  background-color: #c9302c;
+}
+
+.game-card button:nth-of-type(3):hover,
+.game-card button:nth-of-type(4):hover {
+  background-color: #449d44;
+}
 
     .game-list {
       max-width: 800px;
@@ -157,12 +294,19 @@
       <input type="text" id="size" />
     </div>
 
-    <button id="addGameBtn">Add Game</button>
+    <div class="button-row">
+  <button id="addGameBtn">Add Game</button>
+  <button id="clearBtn">Clear</button>
+</div>
     <button id="downloadBtn">Download JSON</button>
-    <input type="file" id="uploadJson" accept=".json" style="margin-top: 10px;" />
-    <button onclick="copyJSONToClipboard()">Copy JSON to Clipboard</button>
+    <div class="file-upload">
+  <input type="file" id="uploadJson" accept=".json" />
+  <label for="uploadJson">Upload JSON</label>
+  <span id="fileName">No file selected</span>
+</div>
+    <button id="copyBtn" onclick="copyJSONToClipboard()">Copy JSON to Clipboard</button>
   </div>
-
+<h2 id="gameCount" style="margin-bottom: 10px; color: #444;"></h2>
   <div class="game-list" id="gameList"></div>
 
   <script>
@@ -170,12 +314,23 @@
     let editIndex = null;
 
     const fields = ["logoUrl", "name", "version", "description", "downloads", "rate", "lockerLink", "modFeatures", "updateDate", "size"];
-
+const addGameBtn = document.getElementById("addGameBtn");
     const clearFields = () => {
-      fields.forEach(id => document.getElementById(id).value = "");
-      editIndex = null;
-    };
+  fields.forEach(id => document.getElementById(id).value = "");
+  editIndex = null;
+  addGameBtn.textContent = "Add Game";
+};
 
+document.getElementById("clearBtn").addEventListener("click", () => {
+  fields.forEach(id => document.getElementById(id).value = "");
+});
+
+document.getElementById("uploadJson").addEventListener("change", function() {
+  const fileNameSpan = document.getElementById("fileName");
+  fileNameSpan.textContent = this.files.length ? this.files[0].name : "No file selected";
+  const file = this.files[0];
+  if (file) uploadJSON(file);
+});
     const getFieldValues = () => {
       const data = {};
       for (let id of fields) {
@@ -192,6 +347,7 @@
     };
 
     const renderGames = () => {
+      document.getElementById("gameCount").textContent = `Total Games: ${games.length}`;
       const list = document.getElementById("gameList");
       list.innerHTML = "";
       games.forEach((game, i) => {
@@ -224,11 +380,12 @@ window.moveDown = function(index) {
   }
 };
     window.editGame = function(index) {
-      const game = games[index];
-      fields.forEach(id => document.getElementById(id).value = game[id]);
-      editIndex = index;
-      document.getElementById("logoUrl").scrollIntoView({ behavior: "smooth" });
-    };
+  const game = games[index];
+  fields.forEach(id => document.getElementById(id).value = game[id]);
+  editIndex = index;
+  addGameBtn.textContent = "Edit Game"; // Change button text
+  document.getElementById("logoUrl").scrollIntoView({ behavior: "smooth" });
+};
 
     window.removeGame = function(index) {
       games.splice(index, 1);
@@ -278,23 +435,24 @@ window.moveDown = function(index) {
       reader.readAsText(file);
     };
 
-    document.getElementById("addGameBtn").addEventListener("click", () => {
-      const game = getFieldValues();
-      if (!game) return alert("Please fill out all fields.");
+    addGameBtn.addEventListener("click", () => {
+  const game = getFieldValues();
+  if (!game) return alert("Please fill out all fields.");
 
-      if (editIndex !== null) {
-        game.id = games[editIndex].id;
-        games[editIndex] = game;
-        editIndex = null;
-      } else {
-        game.id = Date.now();
-        games.push(game);
-      }
+  if (editIndex !== null) {
+    game.id = games[editIndex].id;
+    games[editIndex] = game;
+    editIndex = null;
+    addGameBtn.textContent = "Add Game"; // Reset to default
+  } else {
+    game.id = Date.now();
+    games.push(game);
+  }
 
-      renderGames();
-      saveToLocalStorage();
-      clearFields();
-    });
+  renderGames();
+  saveToLocalStorage();
+  clearFields();
+});
 
     document.getElementById("downloadBtn").addEventListener("click", downloadJSON);
 
