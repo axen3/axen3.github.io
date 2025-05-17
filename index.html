@@ -149,7 +149,7 @@ header{position: relative;}
     background-color: #7fff00;
     color: #1e1e1e;
   }
-  .scroll-link .linksvg{height: 25px;width:25px}
+  .scroll-link .linksvg{height: 25px;width:25px;transform:rotate(-25deg)}
     .game-card {
       background: #1e1e1e;
       border-radius: 8px;
@@ -483,10 +483,11 @@ header{position: relative;}
 </div>
   <script>
     const PAGE_SIZE = 10;
-    let currentPage = 1;
+  //  let currentPage = 1;
     let allGames = [];
     let filteredGames = [];
-
+    let currentPage = parseInt(new URLSearchParams(window.location.search).get("page")) || 1;
+    
 function getStarRatingHTML(rating) {
       // Clamp and round to nearest 0.25
       rating = Math.max(0, Math.min(5, rating));
@@ -670,6 +671,11 @@ window.addEventListener("popstate", () => {
     closeModal(); // Only close if we're leaving #overview
   }
 });
+function updatePageInURL(page) {
+  const url = new URL(window.location);
+  url.searchParams.set("page", page);
+  history.pushState({}, '', url);
+}
     function renderPagination() {
   const pagination = document.getElementById("pagination");
   pagination.innerHTML = "";
@@ -684,6 +690,7 @@ window.addEventListener("popstate", () => {
   prevBtn.style.display = currentPage === 1 ? "none" : "flex";
   prevBtn.onclick = () => {
     currentPage--;
+    updatePageInURL(currentPage);
     renderGamesPage();
     scrollToTop();
   };
@@ -699,6 +706,7 @@ nextBtn.innerHTML = `<span>Next</span>
   nextBtn.style.display = currentPage === totalPages ? "none" : "flex";
   nextBtn.onclick = () => {
     currentPage++;
+    updatePageInURL(currentPage);
     renderGamesPage();
     scrollToTop();
   };
@@ -707,6 +715,10 @@ nextBtn.innerHTML = `<span>Next</span>
   pagination.appendChild(document.createTextNode(` Page ${currentPage} of ${totalPages} `));
   pagination.appendChild(nextBtn);
 }
+window.addEventListener("popstate", () => {
+  currentPage = parseInt(new URLSearchParams(window.location.search).get("page")) || 1;
+  renderGamesPage();
+});
     fetch("https://api.jsonbin.io/v3/b/68234c858561e97a50131282", {
       headers: {
         "X-Access-Key": "$2a$10$gSgfYlP3hTZUvhD66Vr0ReHzaQdcR/c0oi9rzQeM7/xDQb0pYfen2"
