@@ -160,8 +160,25 @@ header{position: relative;}
       gap: 15px;
       align-items: flex-start;
       transition: background 0.3s, color 0.3s;
+      position: relative;
+      overflow: hidden;
     }
-
+.game-card:before {
+    content: "Mod";
+    position: absolute;
+    top: 0px;
+    right: -32px;
+    width: 75px;
+    text-align: center;
+    transform: rotate(45deg);
+    background: darkorange;
+    padding: 8px 12px;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+}
     .light-mode .game-card {
       background: white;
       color: #000;
