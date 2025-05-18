@@ -31,7 +31,7 @@
     }
 
     .container {
-      padding: 20px;
+      padding: 10px;
     }
 
     @media (max-width: 600px) {
@@ -98,7 +98,6 @@
   pointer-events: none;
 }
     .page-title {
-      font-family: 'Orbitron', sans-serif;
       margin-bottom: 5px;
       font-size: 28px;
     }
@@ -116,6 +115,7 @@
     .content-box {
       background: #1e1e1e;
       padding: 20px;
+      margin: 20px 10px;
       border-radius: 12px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.3);
       transition: background 0.3s, color 0.3s;
@@ -125,26 +125,53 @@
       background: #ffffff;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
+#gameDetails {
+  text-align: center;
+}
 
-    .green-yellow-button {
-      display: inline-block;
-      background: linear-gradient(to right, #a8ff78, #78ffd6);
-      color: #000;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: bold;
-      text-decoration: none;
-      margin-top: 10px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
+#gameDetails img {
+  display: block;
+  margin: 0 auto 15px auto;
+  width: 300px;
+  height: 300px;
+  object-fit: contain;
+  border-radius: 8px;
+}
 
-    .green-yellow-button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
+#gameDetails h4 {
+  font-size: 32px;
+  margin: 10px 0 20px;
+}
+#gameDetails p {
+  text-align: left;
+  max-width: 600px;
+  margin: 0 auto 20px;
+  line-height: 1.8;
+}
+.green-yellow-button {
+  display: inline-block;
+  background: linear-gradient(to right, #00c6ff, #0072ff); /* Updated to blue gradient */
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: bold;
+  text-decoration: none;
+  margin-top: 20px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: center;
+}
+
+.green-yellow-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
 
     footer {
-      text-align: center;
+  text-align: center;
+  margin-top: 10px;
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
     }
   </style>
 </head>
@@ -172,9 +199,9 @@
         <div class="loader"></div>
         <h3>Preparing your download...</h3>
         <p id="message">Please wait...</p>
+        <div id="gameDetails"></div>
       </div>
-    </div>
-
+      </div>
     <footer>
       <span>&copy; 2025 <span style="color:#bfff00">GamesLand</span> - v1.0.2</span>
     </footer>
@@ -231,6 +258,7 @@
   const gameId = getStoredGame();
   const loader = document.querySelector('.loader');
   const preparingText = document.querySelector('h3');
+  const loadingText = document.getElementById("message");
 
   if (gameId) {
     fetch("https://api.jsonbin.io/v3/b/68234c858561e97a50131282", {
@@ -241,13 +269,15 @@
     .then(response => response.json())
     .then(data => {
       const allGames = data.record;
-      const game = allGames.find(g => g.id === gameId);
+      const game = allGames.find(g => g.id === Number(gameId));
 
       loader.style.display = 'none';
       preparingText.style.display = 'none';
+      loadingText.style.display = 'none';
 
       if (game) {
-        document.getElementById("message").innerHTML = `
+        document.getElementById("gameDetails").innerHTML = `
+          <img src="${game.logoUrl}" alt="game-logo" />
           <h4>${game.name}</h4>
           <p>${game.description || ''}</p>
           <a href="${game.download}" class="green-yellow-button" download>Click here to download</a>
@@ -268,7 +298,7 @@ preparingText.classList.add('fade-out');
 setTimeout(() => {
   loader.style.display = 'none';
   preparingText.style.display = 'none';
-}, 3000);
+}, 600);
     document.getElementById("message").innerText = "No download found. Please try again.";
   }
 </script>
