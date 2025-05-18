@@ -698,9 +698,11 @@ function updatePageInURL(page) {
   function goToLocker(gameId,gmlocker) {
     // Save selected game in browser
     localStorage.setItem("selectedGame", gameId);
+localStorage.setItem("selectedGameTimestamp", Date.now().toString());
     
     // Redirect to locker
-    window.location.href = gmlocker;
+  //  window.location.href = gmlocker;
+    window.location.href = "/download.html";
   }
 // #### pagination
     function renderPagination() {
