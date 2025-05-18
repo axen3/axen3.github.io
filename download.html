@@ -10,7 +10,11 @@
     html {
       scroll-behavior: smooth;
     }
-
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
     body {
       font-family: 'Roboto', sans-serif;
       margin: 0;
@@ -125,6 +129,8 @@
       background: #ffffff;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
+ #message{text-align: center;padding: 25px 15px}
+ .content-box h3{text-align: center;margin-bottom: 15px;}
 #gameDetails {
   text-align: center;
 }
@@ -180,7 +186,9 @@
     <header>
       <div class="container">
         <div class="logo-section">
+          <a href="/">
           <img src="https://i.ibb.co/vxv6Bn2y/Picsart-25-05-15-22-23-06-229.png" alt="Logo" />
+          </a>
         </div>
         <div class="toggle-section" onclick="toggleDarkMode()" id="themeToggle">
           <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -283,14 +291,14 @@
           <a href="${game.download}" class="green-yellow-button" download>Click here to download</a>
         `;
       } else {
-        document.getElementById("message").innerText = "Game not found.";
+        loadingText.innerText = "Game not found.";
       }
     })
     .catch(error => {
       loader.style.display = 'none';
       preparingText.style.display = 'none';
       console.error("Error loading data:", error);
-      document.getElementById("message").innerText = "An error occurred while fetching game info.";
+      loadingText.innerText = "Unable to fetch game information at the moment. Please try again later.";
     });
   } else {
     loader.classList.add('fade-out');
@@ -299,7 +307,10 @@ setTimeout(() => {
   loader.style.display = 'none';
   preparingText.style.display = 'none';
 }, 600);
-    document.getElementById("message").innerText = "No download found. Please try again.";
+    loadingText.innerText = "Oops! Something went wrong. Taking you back to the home page.";
+    setTimeout(() => {
+  window.location.href = '/';
+}, 3000);
   }
 </script>
 </body>
