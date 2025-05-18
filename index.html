@@ -162,6 +162,7 @@ header{position: relative;}
       transition: background 0.3s, color 0.3s;
       position: relative;
       overflow: hidden;
+      border: 0.2px solid rgba(255, 140, 0, 0.5);
     }
 .game-card:before {
     content: "Mod";
@@ -615,7 +616,7 @@ function getStarRatingHTML(rating) {
         <p><strong style="color:#bfff00">Version:</strong> ${selected.version}</p>
         <p><strong style="color:#bfff00">Size:</strong> ${selected.size || 'N/A'}</p>
         <p><strong style="color:#bfff00">Last Update:</strong> ${selected.updateDate}</p>
-        <br/><h4 style="color:#bfff00">About Game:</h4><p style="text-align:left;font-size:1rem;line-height:1.8">${selected.description}</p><h4 style="color:#bfff00">Mod Features:</h4><p style="text-align:left;">${selected.modFeatures}</p><br/><button class="dw-button" onclick="window.open('${selected.lockerLink}')">Download (${selected.size}) <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
+        <br/><h4 style="color:#bfff00">About Game:</h4><p style="text-align:left;font-size:1rem;line-height:1.8">${selected.description}</p><h4 style="color:#bfff00">Mod Features:</h4><p style="text-align:left;">${selected.modFeatures}</p><br/><button class="dw-button" onclick="goToLocker(${selected.id},'${selected.lockerLink}')">Download (${selected.size}) <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
     stroke-linecap="round" stroke-linejoin="round" class="feather feather-download">
   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
   <polyline points="7 10 12 15 17 10" />
@@ -694,6 +695,14 @@ function updatePageInURL(page) {
   url.searchParams.set("page", page);
   history.pushState({}, '', url);
 }
+  function goToLocker(gameId,gmlocker) {
+    // Save selected game in browser
+    localStorage.setItem("selectedGame", gameId);
+    
+    // Redirect to locker
+    window.location.href = gmlocker;
+  }
+// #### pagination
     function renderPagination() {
   const pagination = document.getElementById("pagination");
   pagination.innerHTML = "";
