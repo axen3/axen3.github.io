@@ -89,11 +89,9 @@ header{position: relative;}
   100% { transform: rotate(360deg); }
 }
     .controls {
-     // display: flex;
       justify-content: center;
       margin: 20px auto;
       position: relative;
-     // background: red;
       border: none;
       border-radius: 30px;
       width: 95℅;
@@ -102,7 +100,6 @@ header{position: relative;}
 
     .controls input {
       padding: 10px 5px 10px 40px;
-      //margin-left: 26px;
       font-size: 16px;
       border: none;
       border-radius: 30px;
@@ -127,16 +124,13 @@ header{position: relative;}
       box-shadow: 0 0 0 3px #007bff88;
     }
 .scroll-link {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
-    width: 100%;
-    max-width: 115px;
     background-color: #bfff00;
     color: #111;
     padding: 10px;
-    margin: 0 auto;
-    text-align: center;
+    margin: 0px auto;
     border-radius: 8px;
     text-decoration: none;
     font-weight: bold;
@@ -437,9 +431,9 @@ header{position: relative;}
 </svg>
         <input type="text" id="searchBox" placeholder="Search for a game..." />
       </div>
-<a class="scroll-link" href="#how-it-works"><svg class="linksvg" version="1.1" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<center><a class="scroll-link" href="#how-it-works"><svg class="linksvg" version="1.1" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 <path transform="scale(.83333)" d="m12 17.002v-0.009375m0-2.1328c0-3.2156 3-2.5031 3-5.0016 0-1.5797-1.3453-2.8594-3-2.8594-1.3453 0-2.4797 0.84375-2.8641 2.0016m11.864 3c0 4.9688-4.0312 9-9 9s-9-4.0312-9-9 4.0312-9 9-9 9 4.0312 9 9zm0 0" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
-</svg>How It Works</a>
+</svg>How It Works</a></center>
       <div id="gamesContainer">
   <div class="loader"></div>
 </div>
@@ -618,7 +612,7 @@ function getStarRatingHTML(rating) {
         <p><strong style="color:#bfff00">Version:</strong> ${selected.version}</p>
         <p><strong style="color:#bfff00">Size:</strong> ${selected.size || 'N/A'}</p>
         <p><strong style="color:#bfff00">Last Update:</strong> ${selected.updateDate}</p>
-        <br/><h4 style="color:#bfff00">About Game:</h4><p style="text-align:left;font-size:1rem;line-height:1.8">${selected.description}</p><h4 style="color:#bfff00">Mod Features:</h4><p style="text-align:left;">${selected.modFeatures}</p><br/><button class="dw-button" onclick="goToLocker(${selected.id},'${selected.lockerLink}')">Download (${selected.size}) <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
+        <br/><h4 style="color:#bfff00">About Game:</h4><p style="text-align:left;font-size:1rem;line-height:1.8">${selected.description}</p><h4 style="color:#bfff00">Mod Features:</h4><p style="text-align:left;">${selected.modFeatures}</p><h6 style="font-size: 12px;margin:10px 0px;font-weight:600">Available for: ${selected.appleStoreVisible ? "Android & iOS" : "Android"}</h6><button class="dw-button" onclick="goToLocker(${selected.id},'${selected.lockerLink}')">Download (${selected.size}) <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
     stroke-linecap="round" stroke-linejoin="round" class="feather feather-download">
   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
   <polyline points="7 10 12 15 17 10" />
