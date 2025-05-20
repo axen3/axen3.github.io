@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!--
   <script>
     // List of restricted countries (ISO 3166-1 alpha-2 codes)
-const restrictedCountries = ['KA', 'DZ', 'IN', 'BD', 'PH', 'ID', 'EG', 'TN'];
+const restrictedCountries = ['MA', 'DZ', 'IN', 'BD', 'PH', 'ID', 'EG', 'TN'];
 
 (function checkVisitorCountry() {
     // Use an IIFE to run immediately
@@ -62,7 +63,7 @@ const restrictedCountries = ['KA', 'DZ', 'IN', 'BD', 'PH', 'ID', 'EG', 'TN'];
     // Execute the async function
     fetchCountry();
 })();
-  </script>
+  </script> -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>GamesLand</title>
@@ -678,7 +679,7 @@ function getStarRatingHTML(rating) {
         <p><strong style="color:#bfff00">Version:</strong> ${selected.version}</p>
         <p><strong style="color:#bfff00">Size:</strong> ${selected.size || 'N/A'}</p>
         <p><strong style="color:#bfff00">Last Update:</strong> ${selected.updateDate}</p>
-        <br/><h4 style="color:#bfff00">About Game:</h4><p style="text-align:left;font-size:1rem;line-height:1.8">${selected.description}</p><h4 style="color:#bfff00">Mod Features:</h4><p style="text-align:left;">${selected.modFeatures}</p><h6 style="font-size: 14px;margin:10px 0px;font-weight:600">Available for: ${selected.appleStoreVisible ? "Android & iOS" : "Android"}</h6><button class="dw-button" onclick="goToLocker(${selected.id},'${selected.lockerLink}')">Download (${selected.size}) <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
+        <br/><h4 style="color:#bfff00">About Game:</h4><p style="text-align:left;font-size:1rem;line-height:1.8">${selected.description}</p><h4 style="color:#bfff00">Mod Features:</h4>${styleMods(selected.modFeatures)}<br/><h6 style="font-size: 14px;margin:10px 0px;font-weight:600">Available for: ${selected.appleStoreVisible ? "Android & iOS" : "Android"}</h6><button class="dw-button" onclick="goToLocker(${selected.id},'${selected.lockerLink}')">Download (${selected.size}) <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
     stroke-linecap="round" stroke-linejoin="round" class="feather feather-download">
   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
   <polyline points="7 10 12 15 17 10" />
@@ -757,6 +758,18 @@ function updatePageInURL(page) {
   url.searchParams.set("page", page);
   history.pushState({}, '', url);
 }
+// stylize mod fstylize
+function styleMods(text) {
+  // Split the text by newlines to get each line as an item
+  const lines = text.trim().split('\n').filter(line => line.trim() !== '');
+  
+  // Wrap each line with <li> tags
+  const listItems = lines.map(line => `<li>${line.trim()}</li>`).join('\n');
+  
+  // Wrap all list items inside <ul> tags
+  return `<ul>\n${listItems}\n</ul>`;
+}
+// go to offers
   function goToLocker(gameId,gmlocker) {
     // Save selected game in browser
     localStorage.setItem("selectedGame", gameId);
