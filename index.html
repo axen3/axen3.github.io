@@ -1,6 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    // List of restricted countries (ISO 3166-1 alpha-2 codes)
+const restrictedCountries = ['MA', 'DZ', 'IN', 'BD', 'PH', 'ID', 'EG', 'TN'];
+
+(function checkVisitorCountry() {
+    // Use an IIFE to run immediately
+    async function fetchCountry() {
+        try {
+            // Primary API: IP-API.com (free, 45 requests/min)
+            const response = await fetch('http://ip-api.com/json/', {
+                headers: { 'Accept': 'application/json' },
+                timeout: 5000 // 5-second timeout
+            });
+            const data = await response.json();
+
+            // Validate response
+            if (data.status !== 'success' || !data.countryCode) {
+                throw new Error('Invalid geolocation data from IP-API.com');
+            }
+
+            const countryCode = data.countryCode;
+
+            // Block if country is restricted
+            if (restrictedCountries.includes(countryCode)) {
+                window.location.href = '/blocked.html'; // Redirect to blocked page
+                // Alternative: Display message (uncomment to use)
+                // document.body.innerHTML = '<h1>Access Denied</h1><p>Sorry, this website is not available in your country.</p>';
+            }
+        } catch (error) {
+            console.error('Error fetching geolocation from IP-API.com:', error);
+
+            // Fallback API: ipapi.co
+            try {
+                const fallbackResponse = await fetch('https://ipapi.co/json/', {
+                    headers: { 'Accept': 'application/json' },
+                    timeout: 5000
+                });
+                const fallbackData = await fallbackResponse.json();
+
+                if (!fallbackData || !fallbackData.country_code) {
+                    throw new Error('Invalid geolocation data from ipapi.co');
+                }
+
+                const countryCode = fallbackData.country_code;
+
+                if (restrictedCountries.includes(countryCode)) {
+                    window.location.href = '/blocked.html';
+                }
+            } catch (fallbackError) {
+                console.error('Error fetching geolocation from fallback API:', fallbackError);
+                // Fallback behavior: Allow access (modify to block if preferred)
+                console.warn('Geolocation failed; allowing access by default');
+                // Alternative: Block access
+                // window.location.href = '/blocked.html';
+            }
+        }
+    }
+
+    // Execute the async function
+    fetchCountry();
+})();
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>GamesLand</title>
@@ -497,6 +559,9 @@ header{position: relative;}
 </div>
 </div>
   <script>
+  // start user location checkinc
+  
+  // end user location checking
     const PAGE_SIZE = 10;
   //  let currentPage = 1;
     let allGames = [];
@@ -613,7 +678,7 @@ function getStarRatingHTML(rating) {
         <p><strong style="color:#bfff00">Version:</strong> ${selected.version}</p>
         <p><strong style="color:#bfff00">Size:</strong> ${selected.size || 'N/A'}</p>
         <p><strong style="color:#bfff00">Last Update:</strong> ${selected.updateDate}</p>
-        <br/><h4 style="color:#bfff00">About Game:</h4><p style="text-align:left;font-size:1rem;line-height:1.8">${selected.description}</p><h4 style="color:#bfff00">Mod Features:</h4><p style="text-align:left;">${selected.modFeatures}</p><h6 style="font-size: 12px;margin:10px 0px;font-weight:600">Available for: ${selected.appleStoreVisible ? "Android & iOS" : "Android"}</h6><button class="dw-button" onclick="goToLocker(${selected.id},'${selected.lockerLink}')">Download (${selected.size}) <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
+        <br/><h4 style="color:#bfff00">About Game:</h4><p style="text-align:left;font-size:1rem;line-height:1.8">${selected.description}</p><h4 style="color:#bfff00">Mod Features:</h4><p style="text-align:left;">${selected.modFeatures}</p><h6 style="font-size: 14px;margin:10px 0px;font-weight:600">Available for: ${selected.appleStoreVisible ? "Android & iOS" : "Android"}</h6><button class="dw-button" onclick="goToLocker(${selected.id},'${selected.lockerLink}')">Download (${selected.size}) <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
     stroke-linecap="round" stroke-linejoin="round" class="feather feather-download">
   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
   <polyline points="7 10 12 15 17 10" />
