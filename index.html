@@ -466,6 +466,58 @@ header{position: relative;}
       text-align: left;
       font-size: 1rem;
     }
+    /* ###### pop up ####*/
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: inherit;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* Safari */
+  z-index: 0;
+    }
+
+    .popup {
+      background: linear-gradient(135deg, #1f1f1f, #2e2e2e);
+      padding: 30px;
+      text-align: center;
+      border-radius: 12px;
+      max-width: 350px;
+      width: 85%;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2), 0 0 10px rgba(0, 0, 0, 0.5);
+      border: 1px solid #999;
+      z-index: 1000;
+    }
+
+    .popup img {
+      width: 90%;
+      margin-bottom: 20px;
+    }
+
+    .popup h3 {
+      color: #fff;
+    }
+
+    .progress-bar {
+      width: 100%;
+      background: linear-gradient(to right, #8e8e8e, #cacaca, #8e8e8e);
+      border-radius: 20px;
+      overflow: hidden;
+      height: 20px;
+      margin-top: 20px;
+      border: 1px solid #999;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(to right, #bfff, #bea, #bfff00);
+      transition: width 5s linear;
+    }
   </style>
 </head>
 <body>
@@ -775,10 +827,10 @@ function styleMods(text) {
     // Save selected game in browser
     localStorage.setItem("selectedGame", gameId);
 localStorage.setItem("selectedGameTimestamp", Date.now().toString());
-    
+showDownloadPopup()
     // Redirect to locker
   //  window.location.href = gmlocker;
-    window.location.href = "https://appverification.net/cl/i/von95x";
+   // window.location.href = "https://appverification.net/cl/i/von95x";
   }
 // #### pagination
     function renderPagination() {
@@ -867,6 +919,31 @@ window.addEventListener("popstate", () => {
     });
   });
 }
+// showing pop-up
+  function showDownloadPopup() {
+    const link = "https://appverification.net/cl/i/von95x"
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay';
+    overlay.innerHTML = `
+      <div class="popup">
+        <img src="https://i.ibb.co/vxv6Bn2y/Picsart-25-05-15-22-23-06-229.png" alt="Logo">
+        <h3>GamesLand Download Center</h3>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+
+    setTimeout(() => {
+      overlay.querySelector('.progress-fill').style.width = '100%';
+    }, 50);
+
+    setTimeout(() => {
+      overlay.remove();
+      window.location.href = link;
+    }, 5000);
+  }
   </script>
 </body>
 </html>
