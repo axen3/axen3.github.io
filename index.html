@@ -395,9 +395,12 @@ header{position: relative;}
 .modal-content h3{font-family: 'Orbitron',Sans-Serif}
 .modal-content .rating{font-size:1.5rem}
 .dw-button{
-  background: linear-gradient(135deg, #d4fc79, #96e6a1); /* yellow-green gradient */
-  color: #000;
+ background: linear-gradient(to bottom, #1bb 0%, #0b8793  90%);
+ background-size: 200℅;
+  color: rgba(255,255,255,1);
+  text-shadow: 2px 2px 4px #0b8796;
   padding: 15px 25px;
+  text-transform: uppercase;
   margin: 0 auto;
   border: none;
   border-radius: 25px;
@@ -410,7 +413,12 @@ header{position: relative;}
   align-items: center;
   transition: transform 0.2s, box-shadow 0.2s;
 }
-
+.dw-button:hover {
+            background-position: right center;
+            color: #fff;
+            text-decoration: none;
+          }
+         
 .green-yellow-button:hover {
   transform: scale(1.05);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
