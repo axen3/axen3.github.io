@@ -324,6 +324,7 @@ Download For Android</a><br/>${game.appleStoreVisible ? `<a href="${game.iosLink
 </svg>Download For iOS</a><br/>` : `<br/>`}
           <span style="font-size:12px;margin-top:5px;opacity:0.8">Links valid for 24 hours.</span>
         `;
+        checkLoadImgs(['gameDetails']);
       } else {
         loadingText.innerText = "Game not found.";
       }
@@ -346,6 +347,20 @@ setTimeout(() => {
   window.location.href = '/';
 }, 3000);
   }
+      // handle failed images
+    function checkLoadImgs(containerIds) {
+  const fallbackImage = 'https://i.ibb.co/XfYLrzNX/er.webp';
+
+  containerIds.forEach(id => {
+    const images = document.querySelectorAll(`#${id} img`);
+    images.forEach(img => {
+      img.onerror = () => {
+        img.onerror = null;
+        img.src = fallbackImage;
+      };
+    });
+  });
+}
 </script>
 </body>
 </html>

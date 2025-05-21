@@ -730,10 +730,11 @@ function getStarRatingHTML(rating) {
     document.body.style.overflow = 'hidden';
     history.pushState({ modalOpen: true }, "", "#overview");
     document.getElementById('modalContent').scrollTop = 0;
+    checkLoadImgs(['modalContent']);
   };
         container.appendChild(card);
       });
-
+      checkLoadImgs(['mainContainer']);
       renderPagination();
     }
 
@@ -852,6 +853,20 @@ window.addEventListener("popstate", () => {
       document.querySelector(`[onclick="showTab('${tabId}')"]`).classList.add('active');
       document.getElementById(tabId).classList.add('active');
     }
+    // handle failed images
+    function checkLoadImgs(containerIds) {
+  const fallbackImage = 'https://i.ibb.co/XfYLrzNX/er.webp';
+
+  containerIds.forEach(id => {
+    const images = document.querySelectorAll(`#${id} img`);
+    images.forEach(img => {
+      img.onerror = () => {
+        img.onerror = null;
+        img.src = fallbackImage;
+      };
+    });
+  });
+}
   </script>
 </body>
 </html>
