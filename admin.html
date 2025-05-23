@@ -251,7 +251,10 @@
       margin-right: 8px;
       padding: 8px 12px;
     }
-
+.game-card p {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
     /* Switch Button Styling */
     .switch {
       position: relative;
@@ -487,7 +490,7 @@
         card.innerHTML = `
           <h3>${game.name} (${game.version})</h3>
           <p>${game.description}</p>
-          <p><strong>Android Link:</strong> ${game.androidLink || "N/A"}</p>
+          <p style="text-align:left"><strong>Android Link:</strong> ${game.androidLink || "N/A"}</p>
           <p><strong>iOS Link:</strong> ${game.appleStoreVisible ? (game.iosLink || "N/A") : "Not shown in Apple Store"}</p>
           <button onclick="editGame(${i})">Edit</button>
           <button onclick="removeGame(${i})">Remove</button>
@@ -549,7 +552,7 @@
       const blob = new Blob([JSON.stringify(games, null, 2)], { type: 'application/json' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'games.json';
+      a.download = 'data.json';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
