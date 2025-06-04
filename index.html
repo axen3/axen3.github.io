@@ -1057,36 +1057,9 @@ window.addEventListener("popstate", () => {
     }, 5000);
   }
   // slider
-  const allgms = [
-  {
-    name: "Sky Wars: The Ultimate Epic Battle of the Skies Featuring Legendary Warriors and Fierce Dragons",
-    cover: "https://picsum.photos/id/1015/800/320",
-    logo: "https://picsum.photos/seed/app1/70"
-  },
-  {
-    name: "Jungle Escape",
-    cover: "https://picsum.photos/id/1020/800/320",
-    logo: "https://picsum.photos/seed/app2/70"
-  },
-  {
-    name: "Pixel World",
-    cover: "https://picsum.photos/id/1032/800/320",
-    logo: "https://picsum.photos/seed/app3/70"
-  },
-  {
-    name: "Zombie Run: Apocalypse Dash",
-    cover: "https://picsum.photos/id/1045/800/320",
-    logo: "https://picsum.photos/seed/app4/70"
-  },
-  {
-    name: "Castle Defender",
-    cover: "https://picsum.photos/id/1051/800/320",
-    logo: "https://picsum.photos/seed/app5/70"
-  }
-];
 function showSlider(){
   const maxSlides = 5;
-const gamesToShow = filteredGames.slice(0, maxSlides);
+const gamesToShow = allGames.slice(0, maxSlides);
   const slidesContainer = document.getElementById('slides');
   const dotsContainer = document.getElementById('dots');
 
@@ -1097,7 +1070,7 @@ const gamesToShow = filteredGames.slice(0, maxSlides);
     slide.setAttribute('role', 'tabpanel');
     slide.setAttribute('aria-hidden', index === 0 ? 'false' : 'true');
     slide.innerHTML = `
-      <img loading="lazy" src="${game.logoUrl}" class="cover-img" alt="${game.name}" />
+      <img loading="lazy" src="${game.coverUrl}" class="cover-img" alt="${game.name}" />
       <div class="slide-content">
         <div class="app-info">
           <img loading="lazy" src="${game.logoUrl}" class="app-logo" alt="${game.name}" width="70" height="70" />
