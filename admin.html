@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Game Admin Panel v2.1</title>
+  <title>Game Admin Panel</title>
   <script src="shield.js"></script>
   <style>
     body {
@@ -251,10 +251,12 @@
       margin-right: 8px;
       padding: 8px 12px;
     }
-.game-card p {
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
+
+    .game-card p {
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+
     /* Switch Button Styling */
     .switch {
       position: relative;
@@ -324,6 +326,10 @@
     <div class="form-group">
       <label for="logoUrl">Game Logo URL</label>
       <input type="text" id="logoUrl" placeholder="https://..." />
+    </div>
+    <div class="form-group">
+      <label for="coverUrl">Game Cover URL</label>
+      <input type="text" id="coverUrl" placeholder="https://..." />
     </div>
     <div class="form-group">
       <label for="name">Game Name</label>
@@ -397,6 +403,7 @@
 
     const fields = [
       "logoUrl",
+      "coverUrl",
       "name",
       "version",
       "description",
@@ -490,7 +497,9 @@
         card.innerHTML = `
           <h3>${game.name} (${game.version})</h3>
           <p>${game.description}</p>
-          <p style="text-align:left"><strong>Android Link:</strong> ${game.androidLink || "N/A"}</p>
+          <p><strong>Logo URL:</strong> ${game.logoUrl || "N/A"}</p>
+          <p><strong>Cover URL:</strong> ${game.coverUrl || "N/A"}</p>
+          <p><strong>Android Link:</strong> ${game.androidLink || "N/A"}</p>
           <p><strong>iOS Link:</strong> ${game.appleStoreVisible ? (game.iosLink || "N/A") : "Not shown in Apple Store"}</p>
           <button onclick="editGame(${i})">Edit</button>
           <button onclick="removeGame(${i})">Remove</button>
@@ -567,6 +576,8 @@
             games = result.map(game => ({
               ...game,
               id: game.id || Date.now() + Math.random(),
+              logoUrl: game.logoUrl || "",
+              coverUrl: game.coverUrl || "",
               androidLink: game.androidLink || "",
               iosLink: game.iosLink || "",
               appleStoreVisible: game.appleStoreVisible !== undefined ? game.appleStoreVisible : false
