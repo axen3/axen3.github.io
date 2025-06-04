@@ -467,7 +467,7 @@ header{position: relative;}
 .slider {
   position: relative;
   width: 100%;
-  max-width: 768px;
+  max-width: 800px;
   margin: 0 auto;
   overflow: hidden;
   user-select: none;
@@ -496,7 +496,14 @@ header{position: relative;}
   justify-content: space-between;
   align-items: center;
   padding: 16px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.5) 30%,
+    rgba(0, 0, 0, 0.2) 60%,
+    rgba(0, 0, 0, 0) 100% 
+  );
+  backdrop-filter: blur(1px);
   color: white;
   gap: 12px;
   position: absolute;
@@ -519,16 +526,19 @@ header{position: relative;}
   border-radius: 12px;
   object-fit: cover;
   flex-shrink: 0;
+  border: 0.4px solid rgba(204,204,204,0.4);
 }
 
 .app-title {
   font-size: 14px;
+  font-family: 'Orbitron',Sans-Serif;
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 250px;
   flex-shrink: 1;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 .download-btn {
@@ -578,7 +588,7 @@ header{position: relative;}
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0,0,0,0.4);
+  background: rgba(0,0,0,0.2);
   border-radius: 50%;
   width: 36px;
   height: 36px;
@@ -614,8 +624,8 @@ header{position: relative;}
     height: 50px;
   }
   .app-title {
-    font-size: 12px;
-    max-width: 180px;
+    font-size: 15px;
+    max-width: 200px;
   }
   .download-btn {
     padding: 8px 12px;
