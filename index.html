@@ -463,6 +463,165 @@ header{position: relative;}
       background: linear-gradient(to right, #bfff, #bea, #bfff00);
       transition: width 5s linear;
     }
+  /* slider ########## */
+.slider {
+  position: relative;
+  width: 100%;
+  max-width: 768px;
+  margin: 0 auto;
+  overflow: hidden;
+  user-select: none;
+}
+
+.slides {
+  display: flex;
+  transition: transform 0.4s ease-in-out;
+}
+
+.slide {
+  position: relative;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.cover-img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  display: block;
+}
+
+.slide-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+  color: white;
+  gap: 12px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.app-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.app-logo {
+  width: 70px;
+  height: 70px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.app-title {
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px;
+  flex-shrink: 1;
+}
+
+.download-btn {
+  background: #00c853;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.download-btn:hover {
+  background-color: #009624;
+}
+
+/* Dots */
+.dots {
+  position: absolute;
+  bottom: 12px;
+  width: 100%;
+  text-align: center;
+  z-index: 2;
+}
+
+.dot {
+  display: inline-block;
+  height: 6px;
+  width: 6px;
+  margin: 0 3px;
+  background-color: rgba(255,255,255,0.6);
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.dot.active {
+  background-color: white;
+}
+
+/* Arrows */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.4);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  color: white;
+  font-size: 22px;
+  line-height: 36px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.3s ease;
+  z-index: 3;
+}
+
+.arrow:hover {
+  background: rgba(0,0,0,0.7);
+}
+
+.arrow.prev {
+  left: 12px;
+}
+
+.arrow.next {
+  right: 12px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .cover-img {
+    height: 200px;
+  }
+  .app-logo {
+    width: 50px;
+    height: 50px;
+  }
+  .app-title {
+    font-size: 12px;
+    max-width: 180px;
+  }
+  .download-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
   </style>
 </head>
 <body>
@@ -482,7 +641,14 @@ header{position: relative;}
 </div>
       </div>
     </header>
-
+    <!-- slider -->
+    <div class="slider" id="slider">
+  <div class="dots" id="dots" role="tablist"></div>
+  <div class="slides" id="slides"></div>
+  <div class="arrow prev">&#10094;</div>
+  <div class="arrow next">&#10095;</div>
+</div>
+    <!-- slider -->
     <div class="container" id="mainContainer">
       <div class="controls"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -547,7 +713,7 @@ header{position: relative;}
       </div>
     </div>
   </div>
-    <footer><span>&copy; 2025 <span style="color:#bfff00">GamesLand</span> - v1.0.2</span></footer>
+    <footer><span>&copy; 2025 <span style="color:#bfff00">GamesLand</span> - v1.0.3</span></footer>
     <!-- Modal overlay -->
 <div id="cardModal" class="modal">
   <div class="modal-header">
@@ -831,6 +997,7 @@ window.addEventListener("popstate", () => {
       allGames = data.record;
       filteredGames = [...allGames];
       renderGamesPage();
+      showSlider();
     })
     .catch(error => {
       console.error("Error loading data:", error);
@@ -889,9 +1056,183 @@ window.addEventListener("popstate", () => {
       window.location.href = link;
     }, 5000);
   }
+  // slider
+  const allgms = [
+  {
+    name: "Sky Wars: The Ultimate Epic Battle of the Skies Featuring Legendary Warriors and Fierce Dragons",
+    cover: "https://picsum.photos/id/1015/800/320",
+    logo: "https://picsum.photos/seed/app1/70"
+  },
+  {
+    name: "Jungle Escape",
+    cover: "https://picsum.photos/id/1020/800/320",
+    logo: "https://picsum.photos/seed/app2/70"
+  },
+  {
+    name: "Pixel World",
+    cover: "https://picsum.photos/id/1032/800/320",
+    logo: "https://picsum.photos/seed/app3/70"
+  },
+  {
+    name: "Zombie Run: Apocalypse Dash",
+    cover: "https://picsum.photos/id/1045/800/320",
+    logo: "https://picsum.photos/seed/app4/70"
+  },
+  {
+    name: "Castle Defender",
+    cover: "https://picsum.photos/id/1051/800/320",
+    logo: "https://picsum.photos/seed/app5/70"
+  }
+];
+function showSlider(){
+  const maxSlides = 5;
+const gamesToShow = filteredGames.slice(0, maxSlides);
+  const slidesContainer = document.getElementById('slides');
+  const dotsContainer = document.getElementById('dots');
+
+  gamesToShow.forEach((game, index) => {
+    const slide = document.createElement('div');
+    slide.className = 'slide';
+    slide.id = `slide${index + 1}`;
+    slide.setAttribute('role', 'tabpanel');
+    slide.setAttribute('aria-hidden', index === 0 ? 'false' : 'true');
+    slide.innerHTML = `
+      <img loading="lazy" src="${game.logoUrl}" class="cover-img" alt="${game.name}" />
+      <div class="slide-content">
+        <div class="app-info">
+          <img loading="lazy" src="${game.logoUrl}" class="app-logo" alt="${game.name}" width="70" height="70" />
+          <div class="app-title" title="${game.name}">${game.name}</div>
+        </div>
+        <button class="download-btn" aria-label="${game.name}">Download</button>
+      </div>
+    `;
+    slidesContainer.appendChild(slide);
+
+    const dot = document.createElement('span');
+    dot.className = 'dot' + (index === 0 ? ' active' : '');
+    dot.setAttribute('role', 'tab');
+    dot.setAttribute('aria-selected', index === 0 ? 'true' : 'false');
+    dot.setAttribute('aria-controls', `slide${index + 1}`);
+    dot.tabIndex = index === 0 ? 0 : -1;
+    dotsContainer.appendChild(dot);
+  });
+
+  const dots = document.querySelectorAll('.dot');
+  const sldprevBtn = document.querySelector('.arrow.prev');
+  const sldnextBtn = document.querySelector('.arrow.next');
+  const slideElements = slidesContainer.children;
+
+  let slideIndex = 0;
+  const totalSlides = slideElements.length;
+  let autoSlideInterval;
+
+  function updateAria() {
+    dots.forEach((dot, i) => {
+      dot.setAttribute('aria-selected', i === slideIndex ? 'true' : 'false');
+      dot.tabIndex = i === slideIndex ? 0 : -1;
+    });
+
+    for (let i = 0; i < totalSlides; i++) {
+      slideElements[i].setAttribute('aria-hidden', i === slideIndex ? 'false' : 'true');
+    }
+  }
+
+  function showSlide(index) {
+    slideIndex = index;
+    slidesContainer.style.transform = `translateX(-${slideIndex * 100}%)`;
+    dots.forEach(dot => dot.classList.remove('active'));
+    dots[slideIndex].classList.add('active');
+    updateAria();
+  }
+
+  function nextSlide() {
+    slideIndex = (slideIndex + 1) % totalSlides;
+    showSlide(slideIndex);
+  }
+
+  function prevSlide() {
+    slideIndex = (slideIndex - 1 + totalSlides) % totalSlides;
+    showSlide(slideIndex);
+  }
+
+  function resetAutoSlide() {
+    clearInterval(autoSlideInterval);
+    autoSlideInterval = setInterval(nextSlide, 5000);
+  }
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      showSlide(index);
+      resetAutoSlide();
+    });
+    dot.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        showSlide(index);
+        resetAutoSlide();
+      }
+    });
+  });
+
+  sldprevBtn.addEventListener('click', () => {
+    prevSlide();
+    resetAutoSlide();
+  });
+  sldnextBtn.addEventListener('click', () => {
+    nextSlide();
+    resetAutoSlide();
+  });
+
+  sldprevBtn.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      prevSlide();
+      resetAutoSlide();
+    }
+  });
+  sldnextBtn.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      nextSlide();
+      resetAutoSlide();
+    }
+  });
+
+  // Touch swipe
+  let startX = 0;
+  slidesContainer.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+  });
+
+  slidesContainer.addEventListener('touchend', e => {
+    const endX = e.changedTouches[0].clientX;
+    const diffX = startX - endX;
+    if (Math.abs(diffX) > 50) {
+      if (diffX > 0) nextSlide();
+      else prevSlide();
+      resetAutoSlide();
+    }
+  });
+
+  // Optional: Keyboard support for slider container
+  const slider = document.getElementById('slider');
+  slider.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') {
+      nextSlide();
+      resetAutoSlide();
+    } else if (e.key === 'ArrowLeft') {
+      prevSlide();
+      resetAutoSlide();
+    }
+  });
+
+  // Start slider
+  autoSlideInterval = setInterval(nextSlide, 5000);
+  updateAria();
+}
   </script>
   <script>
-const restrictedCountries = ['MD', 'DZ', 'IN', 'BD', 'PH', 'ID', 'EG', 'TN'];
+const restrictedCountries = ['MK', 'DZ', 'IN', 'BD', 'PH', 'ID', 'EG', 'TN'];
 (function checkVisitorCountry() {
     // Use an IIFE to run immediately
     async function fetchCountry() {
