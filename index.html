@@ -104,7 +104,7 @@ header{
     }
 
     .controls input {
-      padding: 10px 5px 10px 40px;
+      padding: 15px 5px 15px 40px;
       font-size: 16px;
       border: none;
       border-radius: 30px;
@@ -113,16 +113,25 @@ header{
       transition: box-shadow 0.3s ease;
       width: 88%;
       max-width: 400px;
-     background: white;
-      color: black;
+     background: rgba(255,255,255,0.3);
+      color: white;
     }
+ :not(.light-mode) .controls input::placeholder {
+  color: #ccc; /* Light gray, for example */
+}
+ .light-mode .controls input::placeholder{
+   color: #8e8e8e;
+ }
     .controls svg {
       position: absolute;
       left: 10px;
       top: 50%;
       transform: translateY(-50%);
-      width: 20px;
-      height: 20px;
+      width: 26px;
+      height: 26px;
+      color: #fff;
+    }
+    .light-mode .controls svg{
       color: #555;
     }
     .controls input:focus {
