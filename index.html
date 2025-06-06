@@ -1194,6 +1194,7 @@ const modal = document.getElementById('popup');
           setTimeout(() => {
             window.location.href = link;
           }, 500);
+          document.body.remove(overlay);
         }
       }
       updateText();
