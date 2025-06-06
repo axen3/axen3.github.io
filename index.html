@@ -45,7 +45,7 @@ header{
       padding: 10px 20px;
       justify-content: space-between;
       flex-wrap: wrap;
-      background: linear-gradient(135deg, #20ab53, #20ab8f);
+      background: linear-gradient(135deg, #11ba87, #0ba174);
      /* background: linear-gradient(135deg, #06b6d4, #0b4390, #3b82f6);*/
       background-size: 220% 200%;
       animation: gradientShift 10s ease infinite;
@@ -67,10 +67,8 @@ header{
     
     }
     .logo-section img{
-      padding: 5px;
-      margin-left: 10px;
       height: 60px;
-      scale: 1.15;
+     scale: 1.12;
     }
     .toggle-section {
       cursor: pointer;
@@ -485,6 +483,7 @@ header{
       border-radius: 10px;
       width: 90%;
       max-width: 400px;
+      min-height: 200px;
       margin: 10px;
       text-align: center;
       animation: slideIn 0.3s ease-out;
@@ -730,7 +729,7 @@ header{
       <div class="container">
         <div class="logo-section">
           <a href="/">
-          <img src="https://i.ibb.co/gLs89v6W/Picsart-25-06-05-18-11-18-101.png" alt="GamesLand" />
+          <img src="https://i.ibb.co/8gbR574K/Picsart-25-06-06-23-41-34-522.png" alt="GamesLand" />
           </a>
         </div>
         <div class="toggle-section" onclick="toggleDarkMode()" id="themeToggle">
@@ -1139,7 +1138,7 @@ window.addEventListener("popstate", () => {
     overlay.className = 'overlay';
     overlay.innerHTML = `
       <div id="popup">
-        <img src="https://i.ibb.co/gLs89v6W/Picsart-25-06-05-18-11-18-101.png" alt="Logo">
+        <img src="https://i.ibb.co/8gbR574K/Picsart-25-06-06-23-41-34-522.png" alt="Logo">
         <h2>Download Center</h2>
               <p id="modalText">Checking Game <span class="ploader"></span></p>
       <div class="progress-bar">
@@ -1194,7 +1193,7 @@ const modal = document.getElementById('popup');
           setTimeout(() => {
             window.location.href = link;
           }, 500);
-          document.body.remove(overlay);
+          document.body.removeChild(overlay);
         }
       }
       updateText();
