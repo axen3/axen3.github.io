@@ -8,6 +8,10 @@
   <link rel="icon" sizes="180x180" href="https://i.ibb.co/2Ym0rBwB/apple-touch-icon.png">
   <script src="shield.js"></script>
   <style>
+  :root{
+    --primary-color: #11ba87;
+    --secondary-color: #0ba174;
+  }
     html {
       scroll-behavior: smooth;
     }
@@ -47,17 +51,15 @@
 
     header{
       color: white;
-      padding: 15px 20px;
+      padding: 10px 20px;
       justify-content: space-between;
       flex-wrap: wrap;
-      background: linear-gradient(135deg, #3b8922, #20bb99);
-     /* background: linear-gradient(135deg, #06b6d4, #0b4390, #3b82f6);*/
-      background-size: 140% 150%;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      background-size: 220% 200%;
       animation: gradientShift 10s ease infinite;
       color: #fff;
       text-align: center;
       position: relative;
-     /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);*/
     }
 
     @keyframes gradientShift {
@@ -86,10 +88,10 @@
     }
 .loader {
   border: 6px solid #f3f3f3;
-  border-top: 6px solid #bfff00;
+  border-top: 6px solid var(--primary-color);
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   animation: spin 1s linear infinite;
   margin: 50px auto;
 }
@@ -206,7 +208,7 @@ ol,ul {
       <div class="container">
         <div class="logo-section">
           <a href="/">
-           <img src="https://i.ibb.co/gLs89v6W/Picsart-25-06-05-18-11-18-101.png" alt="GamesLand" />
+           <img src="https://i.ibb.co/8gbR574K/Picsart-25-06-06-23-41-34-522.png" alt="GamesLand" />
           </a>
         </div>
         <div class="toggle-section" onclick="toggleDarkMode()" id="themeToggle">
@@ -230,7 +232,7 @@ ol,ul {
       </div>
       </div>
     <footer>
-      <span>&copy; 2025 <span style="color:#bfff00">GamesLand</span> - v1.0.5</span>
+      <span>&copy; 2025 <span style="color:var(--primary-color);text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.25)">GamesLand</span> - v1.0.5</span>
     </footer>
   </div>
 <script>
