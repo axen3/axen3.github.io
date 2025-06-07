@@ -1232,7 +1232,8 @@ const modal = document.getElementById('popup');
   // slider
 function showSlider(){
   const maxSlides = 5;
-const gamesToShow = allGames.slice(0, maxSlides);
+/*const gamesToShow = allGames.slice(0, maxSlides);*/
+const gamesToShow = allGames.filter(game => game.isFeatured);
   const slidesContainer = document.getElementById('slides');
   const dotsContainer = document.getElementById('dots');
 
