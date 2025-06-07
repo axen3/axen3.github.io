@@ -50,13 +50,11 @@ header{
       justify-content: space-between;
       flex-wrap: wrap;
       background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-     /* background: linear-gradient(135deg, #06b6d4, #0b4390, #3b82f6);*/
       background-size: 220% 200%;
       animation: gradientShift 10s ease infinite;
       color: #fff;
       text-align: center;
       position: relative;
-     /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);*/
     }
 
     @keyframes gradientShift {
@@ -923,7 +921,9 @@ function getStarRatingHTML(rating) {
       const pageItems = filteredGames.slice(start, end);
 
       if (pageItems.length === 0) {
-        container.innerHTML = "<p>No games found.</p>";
+        container.innerHTML = `
+        <p style="text-align:center;font-size:18px">No games found.</p>
+        `;
         document.getElementById("pagination").innerHTML = "";
         return;
       }
@@ -1068,9 +1068,6 @@ function styleMods(text) {
     localStorage.setItem("selectedGame", gameId);
 localStorage.setItem("selectedGameTimestamp", Date.now().toString());
 showDownloadPopup()
-    // Redirect to locker
-  //  window.location.href = gmlocker;
-   // window.location.href = "https://appverification.net/cl/i/von95x";
   }
 // #### pagination
     function renderPagination() {
