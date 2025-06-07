@@ -8,6 +8,10 @@
   <link rel="icon" sizes="180x180" href="https://i.ibb.co/2Ym0rBwB/apple-touch-icon.png">
   <!-- <script src="/shield.js"></script> -->
   <style>
+  :root{
+    --primary-color: #11ba87;
+    --secondary-color: #0ba174;
+  }
   html {
   scroll-behavior: smooth;
 }
@@ -45,7 +49,7 @@ header{
       padding: 10px 20px;
       justify-content: space-between;
       flex-wrap: wrap;
-      background: linear-gradient(135deg, #11ba87, #0ba174);
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
      /* background: linear-gradient(135deg, #06b6d4, #0b4390, #3b82f6);*/
       background-size: 220% 200%;
       animation: gradientShift 10s ease infinite;
@@ -79,7 +83,7 @@ header{
     }
 .loader {
   border: 6px solid #f3f3f3;
-  border-top: 6px solid #bfff00;
+  border-top: 6px solid var(--primary-color);
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -157,7 +161,7 @@ header{
       flex: 1;
       text-align: center;
       padding: 16px 0;
-      background: linear-gradient(to top, #20bb99 0%, #3b8922 100%);
+      background: linear-gradient(to top, #20bb99 0%, var(--primary-color) 100%);
       color: #fff;
       text-decoration: none;
       font-size: 1.1rem;
@@ -173,7 +177,7 @@ header{
     }
 
     .tab-container a:hover {
-      background: linear-gradient(135deg, #0891b2 0%, #16a34a 100%);
+      background: linear-gradient(135deg, #20bb80 0%, var(--primary-color) 100%);
       transform: translateY(-2px);
     }
 
@@ -192,19 +196,41 @@ header{
     .tab-container a:hover::after {
       opacity: 0.4;
     }
+    .gradient-border {
+  background: linear-gradient(270deg, #2ad199,#2ad1a7);
+  background-size: 600% 600%;
+  animation: gradientMove 5s ease infinite,fadeInUp 0.6s ease-out forwards;
+  padding: 1.8px;
+  border-radius: 8px;
+  margin: 15px 0;
+  opacity: 0;
+  transform: translateY(30px);
+  
+  /* Transition properties */
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
     .game-card {
       background: #1e1e1e;
       border-radius: 8px;
-      padding: 10px;
-      margin: 15px 0;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+     padding: 10px;
+     /* margin: 15px 0;*/
       display: flex;
       gap: 15px;
       align-items: flex-start;
       transition: background 0.3s, color 0.3s;
       position: relative;
       overflow: hidden;
-      border: 2px solid rgba(255, 140, 0, 0.8);
+     /* border: 2px solid rgba(255, 140, 0, 0.8);*/
     }
 .game-card:before {
     content: "Mod";
@@ -214,7 +240,7 @@ header{
     width: 75px;
     text-align: center;
     transform: rotate(45deg);
-    background: darkorange;
+    background: #2ad199;
     padding: 8px 12px;
     color: white;
     font-size: 12px;
@@ -244,8 +270,8 @@ header{
       margin: 0 0 5px;
     }
  .game-info p{display: flex;align-items:center;gap:8px;}
- .game-info svg{fill: #ccc;}
- .light-mode .game-info svg{fill:black;}
+ .game-info svg{fill: var(--primary-color);}
+ .light-mode .game-info svg{fill: var(--secondary-color);}
  .rating {
       display: inline-block;
       position: relative;
@@ -631,7 +657,7 @@ header{
 }
 
 .download-btn {
-  background: #00c853;
+  background: var(--primary-color);
   border: none;
   padding: 10px 16px;
   border-radius: 6px;
@@ -813,7 +839,7 @@ header{
       </div>
     </div>
   </div>
-    <footer><span>&copy; 2025 <span style="color:#bfff00">GamesLand</span> - v1.0.5</span></footer>
+    <footer><span>&copy; 2025 <span style="color:var(--primary-color);text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.25)">GamesLand</span> - v1.0.5</span></footer>
     <!-- Modal overlay -->
 <div id="cardModal" class="modal">
   <div class="modal-header">
@@ -901,9 +927,9 @@ function getStarRatingHTML(rating) {
 
       pageItems.forEach(game => {
         const card = document.createElement("div");
-        card.className = "game-card";
+        card.className = "gradient-border";
         card.innerHTML = `
-          <img src="${game.logoUrl}" alt="${game.name} logo">
+        <div class="game-card"><img src="${game.logoUrl}" alt="${game.name} logo">
           <div class="game-info">
             <h3>${game.name}</h3><span class="rating">${getStarRatingHTML(game.rate)}</span> <strong>${game.rate}</strong>
             <p>
@@ -926,7 +952,7 @@ function getStarRatingHTML(rating) {
 </g>
 </svg>
 <strong>${game.updateDate}</strong></p>
-          </div>
+          </div></div>
         `;
         // wire up the real JSON id
     card.onclick = () => {
