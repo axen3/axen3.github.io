@@ -958,9 +958,16 @@ function getStarRatingHTML(rating) {
           </div></div>
         `;
         // wire up the real JSON id
-    card.onclick = () => {
-    // find the full game object
-    const selected = allGames.find(g => g.id === game.id);
+    card.onclick = () => launchModel(game.id);
+        container.appendChild(card);
+      });
+      checkLoadImgs(['mainContainer']);
+      renderPagination();
+    }
+
+function launchModel(game){
+  
+    const selected = allGames.find(g => g.id === game);
     // build modal inner HTML
     document.getElementById('modalContent').innerHTML = `
       <div style="text-align:center; max-width:300px; margin:0 auto;">
@@ -1024,11 +1031,6 @@ function getStarRatingHTML(rating) {
     document.getElementById('modalContent').scrollTop = 0;
     checkLoadImgs(['modalContent']);
   };
-        container.appendChild(card);
-      });
-      checkLoadImgs(['mainContainer']);
-      renderPagination();
-    }
 
     function scrollToTop() {
       const container = document.getElementById("mainContainer");
@@ -1240,6 +1242,7 @@ const gamesToShow = allGames.slice(0, maxSlides);
     slide.id = `slide${index + 1}`;
     slide.setAttribute('role', 'tabpanel');
     slide.setAttribute('aria-hidden', index === 0 ? 'false' : 'true');
+    slide.onclick = () => {launchModel(game.id)};
     slide.innerHTML = `
       <img loading="lazy" src="${game.coverUrl}" class="cover-img" alt="${game.name}" />
       <div class="slide-content">
@@ -1247,9 +1250,11 @@ const gamesToShow = allGames.slice(0, maxSlides);
           <img loading="lazy" src="${game.logoUrl}" class="app-logo" alt="${game.name}" width="70" height="70" />
           <div class="app-title" title="${game.name}">${game.name}</div>
         </div>
-        <button class="download-btn" aria-label="${game.name}">Download</button>
+        <button onclick="launchModel(${game.id})" class="download-btn" aria-label="${game.name}">Download</button>
       </div>
     `;
+
+  
     slidesContainer.appendChild(slide);
 
     const dot = document.createElement('span');
@@ -1435,4 +1440,3 @@ const restrictedCountries = ['MK', 'DZ', 'IN', 'BD', 'PH', 'ID', 'EG', 'TN'];
   </script>
 </body>
 </html>
-
