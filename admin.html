@@ -323,12 +323,78 @@
       gap: 10px;
     }
 
+    /* Pagination Styling */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .pagination button {
+      width: auto;
+      padding: 8px 16px;
+      font-size: 14px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .pagination button:hover {
+      background-color: #0056b3;
+    }
+
+    .pagination button:disabled {
+      background-color: #6c757d;
+      cursor: not-allowed;
+    }
+
+    .pagination button.active {
+      background-color: #28a745;
+      font-weight: bold;
+    }
+
+    .pagination button.active:hover {
+      background-color: #218838;
+    }
+
+    /* Search Bar Styling */
+    .search-container {
+      max-width: 800px;
+      width: 100%;
+      margin-bottom: 16px;
+    }
+
+    #searchInput {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      box-sizing: border-box;
+      transition: border-color 0.3s;
+    }
+
+    #searchInput:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+
     @media (max-width: 600px) {
       body {
         padding: 10px;
       }
       .container {
         padding: 16px;
+      }
+      .pagination button {
+        padding: 6px 12px;
+        font-size: 12px;
       }
     }
   </style>
@@ -415,11 +481,18 @@
     <button id="downloadBtn">Download JSON</button>
     <button id="copyBtn" onclick="copyJSONToClipboard()">Copy JSON to Clipboard</button>
   </div>
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Search games by title..." />
+  </div>
   <h2 id="gameCount" style="margin-bottom: 10px; color: #444;"></h2>
   <div class="game-list" id="gameList"></div>
+  <div class="pagination" id="pagination"></div>
 <script>
   let games = JSON.parse(localStorage.getItem("games")) || [];
   let editIndex = null;
+  let currentPage = 1;
+  const gamesPerPage = 10;
+  let searchQuery = "";
 
   const fields = [
     "logoUrl",
@@ -509,27 +582,103 @@
   };
 
   const renderGames = () => {
-    document.getElementById("gameCount").textContent = `Total Games: ${games.length}`;
+    // Filter games based on search query
+    const filteredGames = games.filter(game =>
+      game.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    document.getElementById("gameCount").textContent = `Total Games: ${filteredGames.length}`;
     const list = document.getElementById("gameList");
     list.innerHTML = "";
-    games.forEach((game, i) => {
+
+    // Calculate the start and end indices for the current page
+    const startIndex = (currentPage - 1) * gamesPerPage;
+    const endIndex = Math.min(startIndex + gamesPerPage, filteredGames.length);
+    const paginatedGames = filteredGames.slice(startIndex, endIndex);
+
+    paginatedGames.forEach((game, i) => {
+      const globalIndex = games.indexOf(game); // Get the index in the original games array
       const card = document.createElement("div");
       card.className = "game-card";
+      
+      // Truncate fields to specified lengths
+      const truncatedDescription = game.description.length > 130 
+        ? game.description.substring(0, 130) + "..." 
+        : game.description;
+      const truncatedLogoUrl = game.logoUrl && game.logoUrl.length > 100 
+        ? game.logoUrl.substring(0, 100) + "..." 
+        : game.logoUrl || "N/A";
+      const truncatedCoverUrl = game.coverUrl && game.coverUrl.length > 100 
+        ? game.coverUrl.substring(0, 100) + "..." 
+        : game.coverUrl || "N/A";
+      const truncatedAndroidLink = game.androidLink && game.androidLink.length > 100 
+        ? game.androidLink.substring(0, 100) + "..." 
+        : game.androidLink || "N/A";
+      const truncatedIosLink = game.iosLink && game.iosLink.length > 100 
+        ? game.iosLink.substring(0, 100) + "..." 
+        : game.iosLink || "N/A";
+
       card.innerHTML = `
         <h3>${game.name} (${game.version})</h3>
-        <p>${game.description}</p>
-        <p><strong>Logo URL:</strong> ${game.logoUrl || "N/A"}</p>
-        <p><strong>Cover URL:</strong> ${game.coverUrl || "N/A"}</p>
-        <p><strong>Android Link:</strong> ${game.androidLink || "N/A"}</p>
-        <p><strong>iOS Link:</strong> ${game.appleStoreVisible ? (game.iosLink || "N/A") : "Not shown in Apple Store"}</p>
+        <p>${truncatedDescription}</p>
+        <p><strong>Logo URL:</strong> ${truncatedLogoUrl}</p>
+        <p><strong>Cover URL:</strong> ${truncatedCoverUrl}</p>
+        <p><strong>Android Link:</strong> ${truncatedAndroidLink}</p>
+        <p><strong>iOS Link:</strong> ${game.appleStoreVisible ? truncatedIosLink : "Not shown in Apple Store"}</p>
         <p><strong>Featured:</strong> ${game.isFeatured ? "Yes" : "No"}</p>
-        <button onclick="editGame(${i})">Edit</button>
-        <button onclick="removeGame(${i})">Remove</button>
-        <button onclick="moveUp(${i})">↑ Up</button>
-        <button onclick="moveDown(${i})">↓ Down</button>
+        <button onclick="editGame(${globalIndex})">Edit</button>
+        <button onclick="removeGame(${globalIndex})">Remove</button>
+        <button onclick="moveUp(${globalIndex})">↑ Up</button>
+        <button onclick="moveDown(${globalIndex})">↓ Down</button>
       `;
       list.appendChild(card);
     });
+
+    renderPagination(filteredGames);
+  };
+
+  const renderPagination = (filteredGames) => {
+    const pagination = document.getElementById("pagination");
+    pagination.innerHTML = "";
+    const totalPages = Math.ceil(filteredGames.length / gamesPerPage);
+
+    if (totalPages <= 1) return; // No pagination needed for 1 or fewer pages
+
+    // Previous button
+    const prevButton = document.createElement("button");
+    prevButton.textContent = "Previous";
+    prevButton.disabled = currentPage === 1;
+    prevButton.addEventListener("click", () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderGames();
+      }
+    });
+    pagination.appendChild(prevButton);
+
+    // Numbered page buttons
+    for (let i = 1; i <= totalPages; i++) {
+      const pageButton = document.createElement("button");
+      pageButton.textContent = i;
+      pageButton.className = i === currentPage ? "active" : "";
+      pageButton.addEventListener("click", () => {
+        currentPage = i;
+        renderGames();
+      });
+      pagination.appendChild(pageButton);
+    }
+
+    // Next button
+    const nextButton = document.createElement("button");
+    nextButton.textContent = "Next";
+    nextButton.disabled = currentPage === totalPages;
+    nextButton.addEventListener("click", () => {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderGames();
+      }
+    });
+    pagination.appendChild(nextButton);
   };
 
   window.moveUp = function(index) {
@@ -566,6 +715,16 @@
 
   window.removeGame = function(index) {
     games.splice(index, 1);
+    // Adjust currentPage if necessary
+    const filteredGames = games.filter(game =>
+      game.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    const totalPages = Math.ceil(filteredGames.length / gamesPerPage);
+    if (currentPage > totalPages && totalPages > 0) {
+      currentPage = totalPages;
+    } else if (filteredGames.length === 0) {
+      currentPage = 1;
+    }
     renderGames();
     saveToLocalStorage();
   };
@@ -605,6 +764,7 @@
             appleStoreVisible: game.appleStoreVisible !== undefined ? game.appleStoreVisible : false,
             isFeatured: game.isFeatured !== undefined ? game.isFeatured : false
           }));
+          currentPage = 1; // Reset to first page on upload
           saveToLocalStorage();
           renderGames();
           toggleIosLink();
@@ -645,6 +805,7 @@
           appleStoreVisible: game.appleStoreVisible !== undefined ? game.appleStoreVisible : false,
           isFeatured: game.isFeatured !== undefined ? game.isFeatured : false
         }));
+        currentPage = 1; // Reset to first page on upload
         saveToLocalStorage();
         renderGames();
         toggleIosLink();
@@ -672,6 +833,11 @@
       game.id = Date.now();
       games.push(game);
       alert("Game added successfully!");
+      // Adjust currentPage to show the newly added game
+      const filteredGames = games.filter(game =>
+        game.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      currentPage = Math.ceil(filteredGames.length / gamesPerPage);
     }
 
     renderGames();
@@ -702,6 +868,13 @@
       console.error(err);
     });
   }
+
+  // Search functionality
+  document.getElementById("searchInput").addEventListener("input", function() {
+    searchQuery = this.value.trim();
+    currentPage = 1; // Reset to first page on search
+    renderGames();
+  });
 
   renderGames();
 </script>
