@@ -974,7 +974,7 @@ function launchModel(game){
         <img src="${selected.logoUrl}"
              alt="${selected.name} logo"
              style="margin-top:10px;width:100%;height:100%;max-height:300px; border-radius:8px;"/>
-        <h2 style="margin:10px 0; font-family: 'Orbitron', sans-serif;">${selected.name}</h2><span class="rating">${getStarRatingHTML(game.rate)}</span> <span>${game.rate}</span>
+        <h2 style="margin:10px 0; font-family: 'Orbitron', sans-serif;">${selected.name}</h2><span class="rating">${getStarRatingHTML(selected.rate)}</span> <span>${selected.rate}</span>
         <p><strong style="color:#bfff00">Version:</strong> ${selected.version}</p>
         <p><strong style="color:#bfff00">Size:</strong> ${selected.size || 'N/A'}</p>
         <p><strong style="color:#bfff00">Last Update:</strong> ${selected.updateDate}</p>
@@ -983,7 +983,7 @@ function launchModel(game){
   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
   <polyline points="7 10 12 15 17 10" />
   <line x1="12" y1="15" x2="12" y2="3" />
-</svg></button><br/><br/>  <button class="insta-button" onclick="toggleGuide()">
+</svg></button><br/><img src="https://i.ibb.co/0Rptx8km/Picsart-25-06-08-11-36-01-902.png" width="140px" alt="File Safety Verified"/><br/><button class="insta-button" onclick="toggleGuide()">
     <!-- SVG Icon -->
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
       <path d="M12 16l4-5h-3V4h-2v7H8l4 5zM4 18h16v2H4z"/>
