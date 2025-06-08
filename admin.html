@@ -4,33 +4,114 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Game Admin Panel</title>
-  <script src="shield.js"></script>
   <style>
+    :root {
+      /* Light theme variables */
+      --bg-color: #f7fafc;
+      --container-bg: #ffffff;
+      --text-color: #2d3748;
+      --secondary-text: #4a5568;
+      --border-color: #e2e8f0;
+      --card-bg: #ffffff;
+      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --card-hover-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+      --input-focus: #3182ce;
+      --button-bg: #3182ce;
+      --button-hover: #2b6cb0;
+      --add-game-bg: #805ad5;
+      --add-game-hover: #6b46c1;
+      --clear-btn-bg: #718096;
+      --clear-btn-hover: #5a6268;
+      --download-btn-bg: #38a169;
+      --download-btn-hover: #2f855a;
+      --upload-internet-bg: #ed8936;
+      --upload-internet-hover: #dd6b20;
+      --copy-btn-bg: #319795;
+      --copy-btn-hover: #2c7a7b;
+      --file-upload-border: #3182ce;
+      --file-upload-label-bg: #3182ce;
+      --file-upload-label-hover: #2b6cb0;
+      --edit-btn-bg: #ecc94b;
+      --edit-btn-hover: #d69e2e;
+      --remove-btn-bg: #e53e3e;
+      --remove-btn-hover: #c53030;
+      --move-btn-bg: #38a169;
+      --move-btn-hover: #2f855a;
+      --pagination-active-bg: #38a169;
+      --pagination-active-hover: #2f855a;
+    }
+
+    [data-theme="dark"] {
+      /* Dark theme variables */
+      --bg-color: #1a202c;
+      --container-bg: #2d3748;
+      --text-color: #e2e8f0;
+      --secondary-text: #a0aec0;
+      --border-color: #4a5568;
+      --card-bg: #2d3748;
+      --card-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
+      --card-hover-shadow: 0 6px 16px rgba(255, 255, 255, 0.1);
+      --input-focus: #63b3ed;
+      --button-bg: #63b3ed;
+      --button-hover: #4299e1;
+      --add-game-bg: #9f7aea;
+      --add-game-hover: #7f9cf5;
+      --clear-btn-bg: #718096;
+      --clear-btn-hover: #5a6268;
+      --download-btn-bg: #38a169;
+      --download-btn-hover: #2f855a;
+      --upload-internet-bg: #ed8936;
+      --upload-internet-hover: #dd6b20;
+      --copy-btn-bg: #319795;
+      --copy-btn-hover: #2c7a7b;
+      --file-upload-border: #63b3ed;
+      --file-upload-label-bg: #63b3ed;
+      --file-upload-label-hover: #4299e1;
+      --edit-btn-bg: #d69e2e;
+      --edit-btn-hover: #b7791f;
+      --remove-btn-bg: #e53e3e;
+      --remove-btn-hover: #c53030;
+      --move-btn-bg: #38a169;
+      --move-btn-hover: #2f855a;
+      --pagination-active-bg: #38a169;
+      --pagination-active-hover: #2f855a;
+    }
+
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f4f6f9;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-color);
       margin: 0;
       padding: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      color: var(--text-color);
+      transition: background 0.3s, color 0.3s;
     }
 
     .container {
       max-width: 800px;
       width: 100%;
-      background: #fff;
+      background: var(--container-bg);
       border-radius: 12px;
       padding: 24px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--card-shadow);
       box-sizing: border-box;
       margin-bottom: 20px;
     }
 
-    h1 {
-      text-align: center;
-      color: #333;
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       margin-bottom: 24px;
+    }
+
+    h1 {
+      color: var(--text-color);
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
     }
 
     .form-group {
@@ -41,114 +122,105 @@
 
     label {
       display: block;
-      font-weight: 600;
+      font-weight: 500;
       margin-bottom: 6px;
-      color: #555;
+      color: var(--secondary-text);
     }
 
     input,
     textarea {
       width: 100%;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-      transition: border-color 0.3s;
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.3s, background 0.3s;
       box-sizing: border-box;
+      background: var(--container-bg);
+      color: var(--text-color);
     }
 
     input:focus,
     textarea:focus {
-      border-color: #007bff;
+      border-color: var(--input-focus);
       outline: none;
     }
 
     input:disabled {
-      background-color: #f1f1f1;
+      background: var(--border-color);
+      color: var(--secondary-text);
       cursor: not-allowed;
     }
 
     button {
       width: 100%;
-      padding: 14px;
-      background-color: #007bff;
+      padding: 12px;
+      background: var(--button-bg);
       color: white;
-      font-size: 16px;
-      font-weight: bold;
+      font-size: 14px;
+      font-weight: 500;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: background 0.3s, transform 0.2s;
     }
 
     button:hover {
-      background-color: #0056b3;
+      background: var(--button-hover);
+      transform: translateY(-1px);
     }
 
     .button-row {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       flex-wrap: wrap;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     #addGameBtn {
-      background-color: #6610f2;
-      color: white;
-      font-weight: bold;
-      border: none;
-      flex: 1;
+      background: var(--add-game-bg);
     }
 
     #addGameBtn:hover {
-      background-color: #520dc2;
+      background: var(--add-game-hover);
     }
 
     #clearBtn {
-      background-color: #6c757d;
-      color: white;
-      font-weight: bold;
-      border: none;
-      flex: 1;
+      background: var(--clear-btn-bg);
     }
 
     #clearBtn:hover {
-      background-color: #5a6268;
+      background: var(--clear-btn-hover);
     }
 
     #downloadBtn {
-      background-color: #20c997;
-      color: white;
-      font-weight: bold;
-      border: none;
-      margin-top: 10px;
+      background: var(--download-btn-bg);
+      margin-bottom: 12px;
     }
 
     #downloadBtn:hover {
-      background-color: #198754;
+      background: var(--download-btn-hover);
     }
 
     #uploadInternetBtn {
-      background-color: #fd7e14;
-      color: white;
-      font-weight: bold;
-      border: none;
-      margin-top: 10px;
+      background: var(--upload-internet-bg);
+      margin-bottom: 12px;
     }
 
     #uploadInternetBtn:hover {
-      background-color: #e06c00;
+      background: var(--upload-internet-hover);
     }
 
     .file-upload {
       position: relative;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       flex-wrap: wrap;
-      margin: 10px 0;
-      border: 1.8px solid #17aaff;
-      border-radius: 8px;
+      margin: 12px 0;
+      border: 1px solid var(--file-upload-border);
+      border-radius: 6px;
+      padding: 4px;
     }
 
     .file-upload input[type="file"] {
@@ -162,83 +234,44 @@
     }
 
     .file-upload label {
-      background-color: #17a2ff;
+      background: var(--file-upload-label-bg);
       color: white;
-      height: 100%;
-      padding: 12px 20px;
+      padding: 8px 16px;
       margin: 0;
-      border-radius: 8px 0px 0px 8px;
-      font-weight: bold;
+      border-radius: 6px;
+      font-weight: 500;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: background 0.3s;
     }
 
     .file-upload label:hover {
-      background-color: #138496;
+      background: var(--file-upload-label-hover);
     }
 
     .file-upload span {
       font-size: 14px;
-      color: #555;
+      color: var(--secondary-text);
     }
 
     #copyBtn {
-      background-color: #17a2b8;
-      color: white;
-      border: none;
-      font-weight: bold;
-      margin-top: 10px;
+      background: var(--copy-btn-bg);
     }
 
     #copyBtn:hover {
-      background-color: #138496;
+      background: var(--copy-btn-hover);
     }
 
     #gameCount {
-      font-size: 20px;
-      font-weight: 700;
-      color: #333;
-      background-color: #e7f3ff;
-      border-left: 6px solid #007bff;
-      padding: 10px 16px;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-color);
+      background: var(--container-bg);
+      border-left: 4px solid var(--input-focus);
+      padding: 8px 16px;
       border-radius: 6px;
-      box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2);
-      margin: 0 auto 16px auto;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      user-select: none;
+      box-shadow: var(--card-shadow);
+      margin: 0 auto 16px;
       text-align: center;
-    }
-
-    .game-card button:nth-of-type(1) { /* Edit Button */
-      background-color: #f0ad4e;
-      color: white;
-      border: none;
-    }
-
-    .game-card button:nth-of-type(2) { /* Remove/Delete Button */
-      background-color: #d9534f;
-      color: white;
-      border: none;
-    }
-
-    .game-card button:nth-of-type(3),
-    .game-card button:nth-of-type(4) { /* Move Up and Down Buttons */
-      background-color: #5cb85c;
-      color: white;
-      border: none;
-    }
-
-    .game-card button:nth-of-type(1):hover {
-      background-color: #ec971f;
-    }
-
-    .game-card button:nth-of-type(2):hover {
-      background-color: #c9302c;
-    }
-
-    .game-card button:nth-of-type(3):hover,
-    .game-card button:nth-of-type(4):hover {
-      background-color: #449d44;
     }
 
     .game-list {
@@ -247,36 +280,103 @@
     }
 
     .game-card {
-      background: #fff;
-      border: 1px solid #ddd;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
       border-radius: 10px;
-      padding: 16px;
-      margin-bottom: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: var(--card-shadow);
+      transition: box-shadow 0.3s, transform 0.2s;
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 20px;
+      align-items: start;
+      box-sizing: border-box;
+    }
+
+    .game-card:hover {
+      box-shadow: var(--card-hover-shadow);
+      transform: translateY(-2px);
+    }
+
+    .game-card img {
+      width: 80px;
+      height: 80px;
+      max-width: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      background: var(--border-color);
+      box-sizing: border-box;
+    }
+
+    .game-card .content {
+      flex: 1;
+      overflow: hidden; /* Prevent content overflow */
     }
 
     .game-card h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-color);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .game-card p {
       margin: 0 0 8px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--secondary-text);
+      overflow-wrap: break-word;
+    }
+
+    .game-card .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
     }
 
     .game-card button {
       width: auto;
-      margin-right: 8px;
-      padding: 8px 12px;
+      padding: 8px 14px;
+      font-size: 13px;
+      border-radius: 6px;
     }
 
-    .game-card p {
-      word-wrap: break-word;
-      overflow-wrap: break-word;
+    .game-card button:nth-of-type(1) { /* Edit */
+      background: var(--edit-btn-bg);
     }
 
-    /* Switch Button Styling */
+    .game-card button:nth-of-type(1):hover {
+      background: var(--edit-btn-hover);
+    }
+
+    .game-card button:nth-of-type(2) { /* Remove */
+      background: var(--remove-btn-bg);
+    }
+
+    .game-card button:nth-of-type(2):hover {
+      background: var(--remove-btn-hover);
+    }
+
+    .game-card button:nth-of-type(3),
+    .game-card button:nth-of-type(4) { /* Move Up/Down */
+      background: var(--move-btn-bg);
+    }
+
+    .game-card button:nth-of-type(3):hover,
+    .game-card button:nth-of-type(4):hover {
+      background: var(--move-btn-hover);
+    }
+
     .switch {
       position: relative;
       display: inline-block;
-      width: 50px;
+      width: 48px;
       height: 24px;
-      margin-left: 10px;
     }
 
     .switch input {
@@ -292,8 +392,8 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: #ccc;
-      transition: 0.4s;
+      background: var(--border-color);
+      transition: 0.3s;
       border-radius: 24px;
     }
 
@@ -304,26 +404,26 @@
       width: 18px;
       left: 3px;
       bottom: 3px;
-      background-color: white;
-      transition: 0.4s;
+      background: white;
+      transition: 0.3s;
       border-radius: 50%;
     }
 
     input:checked + .slider {
-      background-color: #007bff;
+      background: var(--input-focus);
     }
 
     input:checked + .slider:before {
-      transform: translateX(26px);
+      transform: translateX(24px);
     }
 
     .switch-label {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      color: var(--secondary-text);
     }
 
-    /* Pagination Styling */
     .pagination {
       display: flex;
       justify-content: center;
@@ -335,35 +435,33 @@
 
     .pagination button {
       width: auto;
-      padding: 8px 16px;
-      font-size: 14px;
-      background-color: #007bff;
+      padding: 8px 12px;
+      font-size: 13px;
+      background: var(--button-bg);
       color: white;
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: background 0.3s;
     }
 
     .pagination button:hover {
-      background-color: #0056b3;
+      background: var(--button-hover);
     }
 
     .pagination button:disabled {
-      background-color: #6c757d;
+      background: var(--clear-btn-bg);
       cursor: not-allowed;
     }
 
     .pagination button.active {
-      background-color: #28a745;
-      font-weight: bold;
+      background: var(--pagination-active-bg);
     }
 
     .pagination button.active:hover {
-      background-color: #218838;
+      background: var(--pagination-active-hover);
     }
 
-    /* Search Bar Styling */
     .search-container {
       max-width: 800px;
       width: 100%;
@@ -372,28 +470,45 @@
 
     #searchInput {
       width: 100%;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-      box-sizing: border-box;
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 14px;
+      background: var(--container-bg);
+      color: var(--text-color);
       transition: border-color 0.3s;
     }
 
     #searchInput:focus {
-      border-color: #007bff;
+      border-color: var(--input-focus);
       outline: none;
     }
 
     @media (max-width: 600px) {
       body {
-        padding: 10px;
+        padding: 12px;
       }
       .container {
         padding: 16px;
       }
+      .game-card {
+        grid-template-columns: 1fr;
+        padding: 16px;
+      }
+      .game-card img {
+        width: 100%;
+        height: auto;
+        max-height: 120px;
+        max-width: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 12px;
+      }
+      .game-card .content {
+        width: 100%;
+      }
       .pagination button {
-        padding: 6px 12px;
+        padding: 6px 10px;
         font-size: 12px;
       }
     }
@@ -401,7 +516,16 @@
 </head>
 <body>
   <div class="container">
-    <h1>Game Admin Panel</h1>
+    <div class="header">
+      <h1>Game Admin Panel</h1>
+      <div class="switch-label">
+        <label for="darkModeToggle">Dark Mode</label>
+        <label class="switch">
+          <input type="checkbox" id="darkModeToggle" />
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
     <div class="form-group">
       <label for="logoUrl">Game Logo URL</label>
       <input type="text" id="logoUrl" placeholder="https://..." />
@@ -479,12 +603,12 @@
     </div>
     <button id="uploadInternetBtn">Upload from Internet</button>
     <button id="downloadBtn">Download JSON</button>
-    <button id="copyBtn" onclick="copyJSONToClipboard()">Copy JSON to Clipboard</button>
+    <button id="copyBtn">Copy JSON to Clipboard</button>
   </div>
   <div class="search-container">
     <input type="text" id="searchInput" placeholder="Search games by title..." />
   </div>
-  <h2 id="gameCount" style="margin-bottom: 10px; color: #444;"></h2>
+  <h2 id="gameCount" style="margin-bottom: 12px;"></h2>
   <div class="game-list" id="gameList"></div>
   <div class="pagination" id="pagination"></div>
 <script>
@@ -512,19 +636,34 @@
     "isFeatured"
   ];
 
+  // Dark Mode Toggle
+  const darkModeToggle = document.getElementById("darkModeToggle");
+  const applyTheme = (theme) => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+    darkModeToggle.checked = theme === "dark";
+  };
+
+  // Load theme from localStorage or default to light
+  const savedTheme = localStorage.getItem("theme") || "light";
+  applyTheme(savedTheme);
+
+  // Toggle theme on switch change
+  darkModeToggle.addEventListener("change", () => {
+    applyTheme(darkModeToggle.checked ? "dark" : "light");
+  });
+
   const addGameBtn = document.getElementById("addGameBtn");
   const iosLinkInput = document.getElementById("iosLink");
   const appleStoreSwitch = document.getElementById("appleStoreVisible");
 
-  // Function to toggle iosLink input based on appleStoreVisible state
+  // Toggle iosLink input
   const toggleIosLink = () => {
     iosLinkInput.disabled = !appleStoreSwitch.checked;
+    iosLinkInput.style.background = iosLinkInput.disabled ? 'var(--border-color)' : 'var(--container-bg)';
   };
 
-  // Initialize iosLink state on page load
   toggleIosLink();
-
-  // Add event listener to toggle iosLink when appleStoreVisible changes
   appleStoreSwitch.addEventListener("change", toggleIosLink);
 
   const clearFields = () => {
@@ -536,22 +675,12 @@
         el.value = "";
       }
     });
-    toggleIosLink(); // Ensure iosLink is disabled after clearing
+    toggleIosLink();
     editIndex = null;
     addGameBtn.textContent = "Add Game";
   };
 
-  document.getElementById("clearBtn").addEventListener("click", () => {
-    fields.forEach(id => {
-      const el = document.getElementById(id);
-      if (id === "appleStoreVisible" || id === "isFeatured") {
-        el.checked = false;
-      } else {
-        el.value = "";
-      }
-    });
-    toggleIosLink(); // Ensure iosLink is disabled after clearing
-  });
+  document.getElementById("clearBtn").addEventListener("click", clearFields);
 
   document.getElementById("uploadJson").addEventListener("change", function() {
     const fileNameSpan = document.getElementById("fileName");
@@ -567,22 +696,20 @@
       if (id === "appleStoreVisible" || id === "isFeatured") {
         data[id] = el.checked;
       } else if (id === "iosLink" && !appleStoreSwitch.checked) {
-        data[id] = el.value.trim(); // Store value but skip validation if disabled
+        data[id] = el.value.trim();
       } else {
         if (!el.value.trim()) {
           el.style.borderColor = "red";
           return null;
-        } else {
-          el.style.borderColor = "#ccc";
-          data[id] = el.value.trim();
         }
+        el.style.borderColor = "var(--border-color)";
+        data[id] = el.value.trim();
       }
     }
     return data;
   };
 
   const renderGames = () => {
-    // Filter games based on search query
     const filteredGames = games.filter(game =>
       game.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -591,17 +718,15 @@
     const list = document.getElementById("gameList");
     list.innerHTML = "";
 
-    // Calculate the start and end indices for the current page
     const startIndex = (currentPage - 1) * gamesPerPage;
     const endIndex = Math.min(startIndex + gamesPerPage, filteredGames.length);
     const paginatedGames = filteredGames.slice(startIndex, endIndex);
 
     paginatedGames.forEach((game, i) => {
-      const globalIndex = games.indexOf(game); // Get the index in the original games array
+      const globalIndex = games.indexOf(game);
       const card = document.createElement("div");
       card.className = "game-card";
-      
-      // Truncate fields to specified lengths
+
       const truncatedDescription = game.description.length > 130 
         ? game.description.substring(0, 130) + "..." 
         : game.description;
@@ -619,17 +744,22 @@
         : game.iosLink || "N/A";
 
       card.innerHTML = `
-        <h3>${game.name} (${game.version})</h3>
-        <p>${truncatedDescription}</p>
-        <p><strong>Logo URL:</strong> ${truncatedLogoUrl}</p>
-        <p><strong>Cover URL:</strong> ${truncatedCoverUrl}</p>
-        <p><strong>Android Link:</strong> ${truncatedAndroidLink}</p>
-        <p><strong>iOS Link:</strong> ${game.appleStoreVisible ? truncatedIosLink : "Not shown in Apple Store"}</p>
-        <p><strong>Featured:</strong> ${game.isFeatured ? "Yes" : "No"}</p>
-        <button onclick="editGame(${globalIndex})">Edit</button>
-        <button onclick="removeGame(${globalIndex})">Remove</button>
-        <button onclick="moveUp(${globalIndex})">↑ Up</button>
-        <button onclick="moveDown(${globalIndex})">↓ Down</button>
+        ${game.logoUrl ? `<img src="${game.logoUrl}" alt="${game.name} logo" onerror="this.style.display='none';">` : ''}
+        <div class="content">
+          <h3>${game.name} (${game.version})</h3>
+          <p>${truncatedDescription}</p>
+          <p><strong>Logo URL:</strong> ${truncatedLogoUrl}</p>
+          <p><strong>Cover URL:</strong> ${truncatedCoverUrl}</p>
+          <p><strong>Android Link:</strong> ${truncatedAndroidLink}</p>
+          <p><strong>iOS Link:</strong> ${game.appleStoreVisible ? truncatedIosLink : "Not shown in Apple Store"}</p>
+          <p><strong>Featured:</strong> ${game.isFeatured ? "Yes" : "No"}</p>
+          <div class="actions">
+            <button onclick="editGame(${globalIndex})">Edit</button>
+            <button onclick="removeGame(${globalIndex})">Remove</button>
+            <button onclick="moveUp(${globalIndex})">↑ Up</button>
+            <button onclick="moveDown(${globalIndex})">↓ Down</button>
+          </div>
+        </div>
       `;
       list.appendChild(card);
     });
@@ -642,9 +772,8 @@
     pagination.innerHTML = "";
     const totalPages = Math.ceil(filteredGames.length / gamesPerPage);
 
-    if (totalPages <= 1) return; // No pagination needed for 1 or fewer pages
+    if (totalPages <= 1) return;
 
-    // Previous button
     const prevButton = document.createElement("button");
     prevButton.textContent = "Previous";
     prevButton.disabled = currentPage === 1;
@@ -656,7 +785,6 @@
     });
     pagination.appendChild(prevButton);
 
-    // Numbered page buttons
     for (let i = 1; i <= totalPages; i++) {
       const pageButton = document.createElement("button");
       pageButton.textContent = i;
@@ -668,7 +796,6 @@
       pagination.appendChild(pageButton);
     }
 
-    // Next button
     const nextButton = document.createElement("button");
     nextButton.textContent = "Next";
     nextButton.disabled = currentPage === totalPages;
@@ -707,7 +834,7 @@
         el.value = game[id] || "";
       }
     });
-    toggleIosLink(); // Set iosLink disabled state based on appleStoreVisible
+    toggleIosLink();
     editIndex = index;
     addGameBtn.textContent = "Edit Game";
     document.getElementById("logoUrl").scrollIntoView({ behavior: "smooth" });
@@ -715,7 +842,6 @@
 
   window.removeGame = function(index) {
     games.splice(index, 1);
-    // Adjust currentPage if necessary
     const filteredGames = games.filter(game =>
       game.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -738,11 +864,10 @@
       alert("No data to download.");
       return;
     }
-
     const blob = new Blob([JSON.stringify(games, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'data.json';
+    a.download = 'games.json';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -764,7 +889,7 @@
             appleStoreVisible: game.appleStoreVisible !== undefined ? game.appleStoreVisible : false,
             isFeatured: game.isFeatured !== undefined ? game.isFeatured : false
           }));
-          currentPage = 1; // Reset to first page on upload
+          currentPage = 1;
           saveToLocalStorage();
           renderGames();
           toggleIosLink();
@@ -786,14 +911,9 @@
           "X-Access-Key": "$2a$10$gSgfYlP3hTZUvhD66Vr0ReHzaQdcR/c0oi9rzQeM7/xDQb0pYfen2"
         }
       });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
       const data = await response.json();
-      const result = data.record; // JSONBin API wraps data in a 'record' field
-
+      const result = data.record;
       if (Array.isArray(result)) {
         games = result.map(game => ({
           ...game,
@@ -805,7 +925,7 @@
           appleStoreVisible: game.appleStoreVisible !== undefined ? game.appleStoreVisible : false,
           isFeatured: game.isFeatured !== undefined ? game.isFeatured : false
         }));
-        currentPage = 1; // Reset to first page on upload
+        currentPage = 1;
         saveToLocalStorage();
         renderGames();
         toggleIosLink();
@@ -833,13 +953,11 @@
       game.id = Date.now();
       games.push(game);
       alert("Game added successfully!");
-      // Adjust currentPage to show the newly added game
       const filteredGames = games.filter(game =>
         game.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
       currentPage = Math.ceil(filteredGames.length / gamesPerPage);
     }
-
     renderGames();
     saveToLocalStorage();
     clearFields();
@@ -854,25 +972,23 @@
 
   document.getElementById("uploadInternetBtn").addEventListener("click", uploadFromInternet);
 
-  function copyJSONToClipboard() {
+  document.getElementById("copyBtn").addEventListener("click", () => {
     if (!games.length) {
       alert("No games to copy.");
       return;
     }
-
     const jsonStr = JSON.stringify(games, null, 2);
     navigator.clipboard.writeText(jsonStr).then(() => {
       alert("JSON copied to clipboard!");
     }).catch(err => {
-      alert("Failed to copy JSON. Try a modern browser.");
+      alert("Failed to copy JSON.");
       console.error(err);
     });
-  }
+  });
 
-  // Search functionality
   document.getElementById("searchInput").addEventListener("input", function() {
     searchQuery = this.value.trim();
-    currentPage = 1; // Reset to first page on search
+    currentPage = 1;
     renderGames();
   });
 
