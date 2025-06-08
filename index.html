@@ -397,8 +397,10 @@ header{
 
 .modal-content {
   flex: 1;
+  width: 90℅;
+  max-width: 800px;
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   justify-content: center;
   font-size: 20px;
   /* allow scrolling if it overflows */
@@ -773,6 +775,51 @@ header{
     font-size: 12px;
   }
 }
+// screenshots
+     .sh-slider-container {
+      display: none;
+      max-width: 100%;
+      width: 800px;
+      overflow: hidden;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 1);
+      padding: 10px;
+      margin-top: 45px;
+      /* Optional inner padding */
+    }
+
+    .sh-slider {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none; /* Firefox */
+    }
+
+    .sh-slider::-webkit-scrollbar {
+      display: none; /* Chrome */
+    }
+
+    .sh-slider img {
+      scroll-snap-align: start;
+      width: 90%;
+      max-height: 250px;
+      flex-shrink: 0;
+      object-fit: cover;
+      border-radius: 8px;
+      aspect-ratio: 16/9;
+      transition: transform 0.3s ease;
+    }
+
+    /* Optional: Responsive fixed image width */
+    @media (min-width: 600px) {
+      .sh-slider img {
+        width: 80%; /* Show partial next slide */
+      }
+    }
   </style>
 </head>
 <body>
@@ -1002,7 +1049,9 @@ function launchModel(game){
         <p><strong style="color:#bfff00">Version:</strong> ${selected.version}</p>
         <p><strong style="color:#bfff00">Size:</strong> ${selected.size || 'N/A'}</p>
         <p><strong style="color:#bfff00">Last Update:</strong> ${selected.updateDate}</p>
-        <br/><h4 style="color:#bfff00">About Game:</h4><p style="text-align:left;font-size:1rem;line-height:1.8">${selected.description}</p><h4 style="color:#bfff00">Mod Features:</h4>${styleMods(selected.modFeatures)}<br/><h6 style="font-size: 14px;margin:10px 0px;font-weight:600">Available for: ${selected.appleStoreVisible ? "Android & iOS" : "Android"}</h6><button class="dw-button" onclick="goToLocker(${selected.id},'${selected.lockerLink}')">Download (${selected.size}) <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
+       <div id="sh-slider-container" class="sh-slider-container">
+    <div id="sh-slider" class="sh-slider"></div>
+  </div><h4 style="color:#bfff00">About Game:</h4><p style="text-align:left;font-size:1rem;line-height:1.8">${selected.description}</p><h4 style="color:#bfff00">Mod Features:</h4>${styleMods(selected.modFeatures)}<br/><h6 style="font-size: 14px;margin:10px 0px;font-weight:600">Available for: ${selected.appleStoreVisible ? "Android & iOS" : "Android"}</h6><button class="dw-button" onclick="goToLocker(${selected.id},'${selected.lockerLink}')">Download (${selected.size}) <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
     stroke-linecap="round" stroke-linejoin="round" class="feather feather-download">
   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
   <polyline points="7 10 12 15 17 10" />
@@ -1054,8 +1103,34 @@ function launchModel(game){
     history.pushState({ modalOpen: true }, "", "#overview");
     document.getElementById('modalContent').scrollTop = 0;
     checkLoadImgs(['modalContent']);
+        //show screenshorts
+    shLoadSlider(selected.screenshots);
   };
 
+function shLoadSlider(listOfUrls) {
+      const container = document.getElementById("sh-slider-container");
+      const slider = document.getElementById("sh-slider");
+
+      // Reset
+      container.style.display = 'none';
+      slider.innerHTML = '';
+
+      // Validate input
+     /* if (!text || text.trim() === "-") return;*/
+    if (!listOfUrls || listOfUrls.length === 0 || listOfUrls.some(url => url.trim() === "-")) {
+        return;}
+      // Show container
+      container.style.display = 'block';
+
+      // Add images
+      listOfUrls.forEach(url => {
+        const img = document.createElement("img");
+        img.src = url;
+        img.alt = "sh-Slider Image";
+        slider.appendChild(img);
+      });
+    }
+    
     function scrollToTop() {
       const container = document.getElementById("mainContainer");
       container.scrollIntoView({ behavior: 'smooth' });
