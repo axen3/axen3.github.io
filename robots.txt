@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /admin.html
+Disallow: /blocked.html
+
+Sitemap: https://gamzy.my.to/sitemap.xml
