@@ -1,9 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>GamesLand | Modded Games for Android & iOS</title>
+  <script type="module">
+  async function blockByCountry() {
+    try {
+      // ✅ Check if override is present in URL
+const params = new URLSearchParams(window.location.search);
+const allowOverride = params.get('allowme') === 'true';
+
+if (allowOverride) {
+  console.log('Override enabled. Access granted.');
+  return;
+}
+      const res = await fetch('https://ipwho.is/');
+      const data = await res.json();
+
+      if (!data.success) {
+        throw new Error('Geolocation lookup failed');
+      }
+
+      const blockedCountryCodes = ["EG", "NG", "DZ", "MA", "KE", "CD", "AO", "SD", "SO", "TN", "LY", "IN", "BD", "NP", "IR", "IL"];
+      const userCountryCode = data.country_code;
+
+      console.log('User Country Code:', userCountryCode);
+
+      if (blockedCountryCodes.includes(userCountryCode)) {
+        window.location.href = 'https://wikipedia.com';
+      } else {
+        console.log('Access granted');
+      }
+    } catch (error) {
+      console.error('Country check failed:', error.message || error);
+    }
+  }
+
+  await blockByCountry();
+</script>
+<meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="description" content="GamesLand provides safe, updated modded games for Android and iOS. Unlock premium features, unlimited resources, and enjoy enhanced gameplay for free.">
 <meta name="robots" content="index, follow">
 <meta name="google-site-verification" content="PGkR7hJs969wz_CLG3k3Im3CWgHH_z6iLUo2YmCztB4" />
@@ -1493,48 +1528,5 @@ const gamesToShow = allGames.filter(game => game.isFeatured);
   updateAria();
 }
   </script>
-  <script>
-  const IPHUB_API_KEY = 'Mjg2NjU6YWpKSmpSYWo4Z1dsYW5HNks3djF3ckY2V1VIZWh3WDI='; // Replace with your actual IPHub API key
-
-  async function getIPAndGeoInfo() {
-    const res = await fetch('http://ip-api.com/json/'); // Uses visitor's IP
-    if (!res.ok) throw new Error('ip-api request failed');
-    return await res.json();
-  }
-
-  async function checkVPN(ip) {
-    const res = await fetch(`https://v2.api.iphub.info/ip/${ip}`, {
-      headers: { 'X-Key': IPHUB_API_KEY }
-    });
-    if (!res.ok) throw new Error('IPHub API request failed');
-    return await res.json();
-  }
-
-  async function main() {
-    try {
-      // Step 1: Get IP and Geo Info from ip-api
-      const geoInfo = await getIPAndGeoInfo();
-      console.log('Geo Info:', geoInfo);
-
-      // Step 2: Check VPN status from IPHub
-      const ip = geoInfo.query;
-      const vpnCheck = await checkVPN(ip);
-      console.log('IPHub Info:', vpnCheck);
-
-      // Step 3: Decide based on VPN detection
-      if (vpnCheck.block === 1 || vpnCheck.block === 2) {
-        console.warn('VPN or Proxy detected — blocking access');
-        window.location.href = 'https://google.com'; // or your custom block page
-      } else {
-        console.log('Access granted: Residential IP');
-      }
-
-    } catch (err) {
-      console.error('Error:', err);
-    }
-  }
-
-  main();
-</script>
 </body>
 </html>
