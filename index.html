@@ -36,8 +36,8 @@
       max-width: 800px;
       width: 100%;
       margin: 0 auto;
-      border-right: 1px solid #bde5dd;
-      border-left: 1px solid #bde5dd;
+      border-right: 0.2px solid #bde5dd;
+      border-left: 0.2px solid #bde5dd;
     }
 .light-mode .site-wrapper{
   background: #e7efee;
@@ -118,7 +118,7 @@ header{
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
       outline: none;
       transition: box-shadow 0.3s ease;
-      width: calc(100% - 64px);
+      width: calc(100% - 66px);
       max-width: 800px;
      background: rgba(255,255,255,0.1);
       color: white;
@@ -1494,62 +1494,47 @@ const gamesToShow = allGames.filter(game => game.isFeatured);
 }
   </script>
   <script>
-const restrictedCountries = ['MK', 'DZ', 'IN', 'BD', 'PH', 'ID', 'EG', 'TN'];
-(function checkVisitorCountry() {
-    // Use an IIFE to run immediately
-    async function fetchCountry() {
-        try {
-            // Primary API: IP-API.com (free, 45 requests/min)
-            const response = await fetch('http://ip-api.com/json/', {
-                headers: { 'Accept': 'application/json' },
-                timeout: 5000 // 5-second timeout
-            });
-            const data = await response.json();
+  const IPHUB_API_KEY = 'Mjg2NjU6YWpKSmpSYWo4Z1dsYW5HNks3djF3ckY2V1VIZWh3WDI='; // Replace with your actual IPHub API key
 
-            // Validate response
-            if (data.status !== 'success' || !data.countryCode) {
-                throw new Error('Invalid geolocation data from IP-API.com');
-            }
+  async function getIPAndGeoInfo() {
+    const res = await fetch('http://ip-api.com/json/'); // Uses visitor's IP
+    if (!res.ok) throw new Error('ip-api request failed');
+    return await res.json();
+  }
 
-            const countryCode = data.countryCode;
+  async function checkVPN(ip) {
+    const res = await fetch(`https://v2.api.iphub.info/ip/${ip}`, {
+      headers: { 'X-Key': IPHUB_API_KEY }
+    });
+    if (!res.ok) throw new Error('IPHub API request failed');
+    return await res.json();
+  }
 
-            // Block if country is restricted
-            if (restrictedCountries.includes(countryCode)) {
-                window.location.href = '/blocked.html';
-            }
-        } catch (error) {
-            console.error('Error fetching geolocation from IP-API.com:', error);
+  async function main() {
+    try {
+      // Step 1: Get IP and Geo Info from ip-api
+      const geoInfo = await getIPAndGeoInfo();
+      console.log('Geo Info:', geoInfo);
 
-            // Fallback API: ipapi.co
-            try {
-                const fallbackResponse = await fetch('https://ipapi.co/json/', {
-                    headers: { 'Accept': 'application/json' },
-                    timeout: 5000
-                });
-                const fallbackData = await fallbackResponse.json();
+      // Step 2: Check VPN status from IPHub
+      const ip = geoInfo.query;
+      const vpnCheck = await checkVPN(ip);
+      console.log('IPHub Info:', vpnCheck);
 
-                if (!fallbackData || !fallbackData.country_code) {
-                    throw new Error('Invalid geolocation data from ipapi.co');
-                }
+      // Step 3: Decide based on VPN detection
+      if (vpnCheck.block === 1 || vpnCheck.block === 2) {
+        console.warn('VPN or Proxy detected — blocking access');
+        window.location.href = 'https://google.com'; // or your custom block page
+      } else {
+        console.log('Access granted: Residential IP');
+      }
 
-                const countryCode = fallbackData.country_code;
-
-                if (restrictedCountries.includes(countryCode)) {
-                    window.location.href = '/blocked.html';
-                }
-            } catch (fallbackError) {
-                console.error('Error fetching geolocation from fallback API:', fallbackError);
-                // Fallback behavior: Allow access (modify to block if preferred)
-                console.warn('Geolocation failed; allowing access by default');
-                // Alternative: Block access
-                // window.location.href = '/blocked.html';
-            }
-        }
+    } catch (err) {
+      console.error('Error:', err);
     }
+  }
 
-    // Execute the async function
-    fetchCountry();
-})();
-  </script>
+  main();
+</script>
 </body>
 </html>
