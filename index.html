@@ -19,19 +19,39 @@ if (allowOverride) {
       if (!data.success) {
         throw new Error('Geolocation lookup failed');
       }
-
+      const IPHUB_API_KEY = '';
       const blockedCountryCodes = ["EG", "NG", "DZ", "MA", "KE", "CD", "AO", "SD", "SO", "TN", "LY", "IN", "BD", "NP", "IR", "IL"];
       const userCountryCode = data.country_code;
+      const userIP = data.ip;
+      console.log('User Country Code:', userCountryCode,userIP);
 
-      console.log('User Country Code:', userCountryCode);
-
-      if (blockedCountryCodes.includes(userCountryCode)) {
+ if (blockedCountryCodes.includes(userCountryCode)) {
         window.location.href = 'https://wikipedia.com';
-      } else {
-        console.log('Access granted');
+        return;
       }
+    //check for VPN/proxy using IPHub
+    /*  const iphubRes = await fetch(`https://v2.api.iphub.info/ip/${userIP}`, {
+        method: 'GET',
+        headers: {
+          'X-Key': IPHUB_API_KEY
+        }
+      });
+
+      const iphubData = await iphubRes.json();
+      console.log('🛡️ IPHub Response:', iphubData);
+
+      // block = 1 means VPN/Proxy/Hosting
+      if (iphubData.block === 1) {
+        alert('Access blocked: VPN or proxy detected.');
+        window.location.href = '/access-denied.html';
+        return;
+      }else{console.log('allowed user.')}
+
+      // If no blocks triggered
+      console.log('✅ Access allowed.');
+*/
     } catch (error) {
-      console.error('Country check failed:', error.message || error);
+      console.error('❌ Error during access check:', error);
     }
   }
 
