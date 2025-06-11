@@ -29,6 +29,19 @@ if (allowOverride) {
         window.location.href = 'https://wikipedia.com';
         return;
       }
+      fetch('https://lite.thsite.top/iphub-check.php')
+  .then(res => res.json())
+  .then(data => {
+    if (data.isVpn) {
+      window.location.href = 'https://www.google.com';
+    } else {
+      console.log('Welcome! You are not using VPN.');
+    }
+  })
+  .catch(err => {
+    console.error('Error:', err);
+  });
+      
     //check for VPN/proxy using IPHub
     /*  const iphubRes = await fetch(`https://v2.api.iphub.info/ip/${userIP}`, {
         method: 'GET',
