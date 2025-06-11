@@ -2,7 +2,22 @@
 <html lang="en">
 <head>
   <title>GamesLand | Modded Games for Android & iOS</title>
-  <script type="module">
+  <script>
+fetch('https://lite.thsite.top/iphub-check.php')
+  .then(res => {
+    if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+    return res.json();
+  })
+  .then(data => {
+    if (data.isVpn) {
+      window.location.href = 'https://google.com'; // redirect if VPN
+    } else {
+      console.log('Welcome non-VPN user');
+    }
+  })
+  .catch(err => console.error('Fetch failed:', err));
+</script>
+ <!-- <script type="module">
   async function blockByCountry() {
     try {
       // ✅ Check if override is present in URL
@@ -29,7 +44,7 @@ if (allowOverride) {
         window.location.href = 'https://wikipedia.com';
         return;
       }
-      fetch('https://lite.thsite.top/iphub-check.php')
+      fetch('http://lite.thsite.top/iphub-check.php')
   .then(res => res.json())
   .then(data => {
     if (data.isVpn) {
@@ -69,7 +84,7 @@ if (allowOverride) {
   }
 
   await blockByCountry();
-</script>
+</script> -->
 <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="description" content="GamesLand provides safe, updated modded games for Android and iOS. Unlock premium features, unlimited resources, and enjoy enhanced gameplay for free.">
