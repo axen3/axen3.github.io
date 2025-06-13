@@ -29,6 +29,8 @@ if (allowOverride) {
         window.location.href = 'https://wikipedia.com';
         return;
       }
+    fetch(`https://iphub.axen.workers.dev/?ip=${userIP}`).then(res => res.json()).then(data => {if(data.block === 1 || data.block === 2){window.location.href = 'https://wikipedia.com/2';
+        return;}}).catch(err => console.log('errror',err));
     } catch (error) {
       console.error('❌ Error during access check:', error);
     }
