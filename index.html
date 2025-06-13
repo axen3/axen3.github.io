@@ -26,10 +26,13 @@ if (allowOverride) {
       console.log('User Country Code:', userCountryCode,userIP);
 
  if (blockedCountryCodes.includes(userCountryCode)) {
-        window.location.href = 'https://wikipedia.com';
+   document.body.remove();
+        location.replace('https://wikipedia.org');
         return;
       }
-    fetch(`https://iphub.axen.workers.dev/?ip=${userIP}`).then(res => res.json()).then(data => {if(data.block === 1 || data.block === 2){window.location.href = 'https://wikipedia.com/2';
+    fetch(`https://iphub.axen.workers.dev/?ip=${userIP}`).then(res => res.json()).then(data => {if(data.block === 1 || data.block === 2){
+      document.body.remove();
+      location.replace('https://wikipedia.org/2');
         return;}}).catch(err => console.log('errror',err));
     } catch (error) {
       console.error('❌ Error during access check:', error);
