@@ -1360,18 +1360,18 @@ const modal = document.getElementById('popup');
               modalText.innerHTML = `${texts[index]} ${icon}`;
               index++;
               setTimeout(updateText, 1500); // Next text after 1.5s
-            }, 1500); // Show loader for 1.5s
+            }, 1000); // Show loader for 1.5s
           } else {
             // Keep dots for "Redirecting" step
             setTimeout(() => {
               index++;
               updateText();
-            }, 1500); // Move to redirect after 1.5s
+            }, 1000); // Move to redirect after 1.5s
           }
         } else {
           setTimeout(() => {
             window.location.href = link;
-          }, 500);
+          }, 400);
           document.body.removeChild(overlay);
         }
       }
