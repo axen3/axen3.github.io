@@ -1271,7 +1271,7 @@ window.addEventListener("popstate", () => {
       })
     .then(response => response.json())
     .then(data => {
-      allGames = data.record;
+      allGames = data;
       filteredGames = [...allGames];
       renderGamesPage();
       showSlider();
