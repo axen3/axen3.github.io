@@ -1266,11 +1266,7 @@ window.addEventListener("popstate", () => {
   currentPage = parseInt(new URLSearchParams(window.location.search).get("page")) || 1;
   renderGamesPage();
 });
-    fetch("https://api.jsonbin.io/v3/b/68234c858561e97a50131282", {
-      headers: {
-        "X-Access-Key": "$2a$10$gSgfYlP3hTZUvhD66Vr0ReHzaQdcR/c0oi9rzQeM7/xDQb0pYfen2"
-      }
-    })
+    fetch("https://data.axen.workers.dev")
     .then(response => response.json())
     .then(data => {
       allGames = data.record;
