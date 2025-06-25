@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Games Installer</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #111111;
+      --secondary-text: #555555;
+      --card-bg: #ffffff;
+      --border-color: #e0e0e0;
+      --button-hover: #f2f2f2;
+      --progress-bg: #e0e0e0;
+      --progress-fill: #4caf50;
+    }
+
+    body.dark {
+      --bg: #121212;
+      --text: #ffffff;
+      --secondary-text: #cccccc;
+      --card-bg: #1e1e1e;
+      --border-color: #333;
+      --button-hover: #2a2a2a;
+      --progress-bg: #333333;
+      --progress-fill: #81c784;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      background-image: url('https://i.ibb.co/LdLXxWpp/Screenshot-20250625-111351-ZArchiver.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      font-family: 'Roboto', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      backdrop-filter: blur(1.7px);
+      background-color: rgba(0, 0, 0, 0.52);
+      z-index: 0;
+    }
+
+    .top-bar {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      font-size: 14px;
+      opacity: 0.75;
+      cursor: pointer;
+      color: var(--text);
+      transition: color 0.3s ease;
+      user-select: none;
+      z-index: 10;
+    }
+
+    .installer-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 20px 16px 16px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      width: 90%;
+      max-width: 320px;
+      color: var(--text);
+      z-index: 5;
+      transform: scale(0.85);
+      opacity: 0;
+      animation: popup 0.5s ease-out forwards;
+    }
+
+    @keyframes popup {
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .app-logo {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      object-fit: cover;
+      margin-bottom: 8px;
+      margin-top: 10px;
+    }
+
+    .app-name {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .prompt-text, .status-text {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+
+    .status-text {
+      display: none;
+    }
+
+    .progress-bar-container {
+      background-color: var(--progress-bg);
+      height: 4px;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      display: none;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background-color: var(--progress-fill);
+      transition: width 0.3s ease;
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: nowrap;
+    }
+
+    .button {
+      background: none;
+      border: none;
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      color: var(--text);
+    }
+
+    .button:active {
+      background-color: var(--button-hover);
+    }
+
+    .cancel-button {
+      color: #42a5f5;
+    }
+
+    .install-button {
+      color: #42a5f5;
+    }
+
+    .done-button {
+      color: var(--text);
+    }
+
+    .open-button {
+      color: #42a5f5;
+      animation: pulse 1.5s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.1); }
+    }
+
+    .separator {
+      color: var(--text);
+      opacity: 0.3;
+      user-select: none;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .app-screen {
+      display: none;
+      font-size: 16px;
+      text-align: center;
+      color: var(--text);
+      max-width: 320px;
+      width: 90%;
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 20px 16px 16px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      margin-top: 12px;
+      z-index: 5;
+    }
+
+    .app-screen.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Theme Switch -->
+  <div class="top-bar" onclick="toggleTheme()">🌓 Toggle Theme</div>
+
+  <!-- Installer -->
+  <div class="installer-card" id="installer">
+    <img src="https://i.ibb.co/DDk17dV8/VALORANT-Jett-Red-crop-2.jpg" class="app-logo" alt="Valorant Logo" />
+    <div class="app-name">Valorant Mobile</div>
+
+    <div class="prompt-text" id="prompt-text">Do you want to install this application?</div>
+    <div class="status-text" id="status-text">Installing...</div>
+
+    <div class="progress-bar-container" id="progress-container">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <div class="button-row" id="button-row">
+      <button class="button cancel-button" onclick="cancelInstall()">Cancel</button>
+      <span class="separator">|</span>
+      <button class="button install-button" onclick="startInstall()">Install</button>
+    </div>
+  </div>
+
+  <!-- Opened App Screen -->
+  <div class="app-screen" id="app-screen">
+    <img src="https://i.ibb.co/DDk17dV8/VALORANT-Jett-Red-crop-2.jpg" class="app-logo" alt="Valorant Logo" />
+    <div class="app-name">Valorant Mobile</div>
+    <p style="margin-top: 12px;">🎮 App launched. Welcome, agent.</p>
+  </div>
+
+  <script>
+    let progress = 0;
+    let interval;
+    const progressBar = document.getElementById('progress-bar');
+    const progressContainer = document.getElementById('progress-container');
+    const statusText = document.getElementById('status-text');
+    const buttonRow = document.getElementById('button-row');
+    const promptText = document.getElementById('prompt-text');
+    const installer = document.getElementById('installer');
+    const appScreen = document.getElementById('app-screen');
+
+    function startInstall() {
+      promptText.style.display = 'none';
+      statusText.style.display = 'block';
+      statusText.textContent = 'Installing...';
+      progressContainer.style.display = 'block';
+
+      buttonRow.innerHTML = `<button class="button cancel-button" onclick="cancelInstall()">Cancel</button>`;
+
+      progress = 0;
+      progressBar.style.width = '0%';
+
+      clearInterval(interval);
+
+      interval = setInterval(() => {
+        if (progress < 90) {
+          progress += 2;
+          progressBar.style.width = progress + '%';
+        } else {
+          clearInterval(interval);
+          setTimeout(() => {
+            progress = 100;
+            progressBar.style.width = '100%';
+            statusText.textContent = 'App installed.';
+            showActionButtons();
+          }, 5000);
+        }
+      }, 100);
+    }
+
+    function cancelInstall() {
+      clearInterval(interval);
+      progressBar.style.backgroundColor = '#d32f2f';
+      progressBar.style.width = '100%';
+      statusText.textContent = 'Installation canceled';
+      promptText.style.display = 'none';
+      statusText.style.display = 'block';
+      progressContainer.style.display = 'block';
+
+      buttonRow.innerHTML = `<button class="button done-button" onclick="location.reload()">Close</button>`;
+    }
+
+    function showActionButtons() {
+      buttonRow.innerHTML = `
+        <button class="button done-button" onclick="location.reload()">Done</button>
+        <button class="button open-button" onclick="openApp()">Open</button>
+      `;
+    }
+
+    function openApp() {
+      installer.style.display = 'none';
+      appScreen.classList.add('active');
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+    }
+  </script>
+
+</body>
+</html>
