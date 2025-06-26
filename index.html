@@ -30,7 +30,7 @@ if (allowOverride) {
         location.replace('https://wikipedia.org');
         return;
       }
-    fetch(`https://iphub.axen.workers.dev/?ip=${userIP}`).then(res => res.json()).then(data => {if(data.block === 1 || data.block === 2){
+    fetch(`https://iphub.axen.workers.dev/?ip=${userIP}`).then(res => res.json()).then(data => {if(data.block === 1){
       document.body.remove();
       location.replace('https://wikipedia.org/2');
         return;}}).catch(err => console.log('errror',err));
