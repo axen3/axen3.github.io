@@ -95,16 +95,36 @@ header{
       flex-wrap: wrap;
       background: linear-gradient(85deg, #03b955, var(--primary-color));
       background-size: 200% 200%;
+      border-bottom: 2px solid #03b955;
       animation: gradientShift 10s ease infinite;
       color: #fff;
       text-align: center;
       position: relative;
     }
-
+header::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      height: 3px;
+      width: 100%;
+      background: linear-gradient(90deg, 
+        red, orange, yellow, green, blue, indigo, violet, red);
+      background-size: 300% 100%;
+      animation: moveGradient 5s linear infinite;
+    }
     @keyframes gradientShift {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
+    }
+    @keyframes moveGradient {
+      0% {
+        background-position: 0% 0%;
+      }
+      100% {
+        background-position: 100% 0%;
+      }
     }
     .logo-section {
       display: flex;
