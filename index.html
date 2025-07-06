@@ -906,6 +906,27 @@ header::after {
         width: 80%; /* Show partial next slide */
       }
     }
+   #backToTopBtn {
+  display: none; /* Hidden by default */
+  position: fixed;
+  bottom: 50px;
+  right: 20px;
+  z-index: 99;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  background-color: rgba(11,148,22,0.5);
+  color: white;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  transition: background-color 0.3s;
+}
+
+#backToTopBtn:hover {
+  background-color: #218838;
+}
   </style>
 </head>
 <body>
@@ -1006,6 +1027,9 @@ header::after {
   </div>
   <div class="modal-content" id="modalContent"></div>
 </div>
+<button onclick="scrollToTop()" id="backToTopBtn" title="Back to top"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#fff" viewBox="0 0 24 24">
+  <path d="M12 4c-.39 0-.77.15-1.06.44l-7 7a1.5 1.5 0 0 0 2.12 2.12L11 9.12V20a1.5 1.5 0 0 0 3 0V9.12l4.94 4.44a1.5 1.5 0 1 0 2.12-2.12l-7-7A1.5 1.5 0 0 0 12 4z"/>
+</svg></button>
 </div>
   <script>
   // start user location checkinc
@@ -1562,6 +1586,20 @@ const gamesToShow = allGames.filter(game => game.isFeatured);
   autoSlideInterval = setInterval(nextSlide, 5000);
   updateAria();
 }
+// back to top
+  // Show button after scrolling down 300px
+  window.onscroll = function() {
+    const btn = document.getElementById("backToTopBtn");
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+      btn.style.display = "block";
+    } else {
+      btn.style.display = "none";
+    }
+  };
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
   </script>
 </body>
 </html>
